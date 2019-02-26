@@ -11,7 +11,7 @@ const Address = db.define('address', {
     allowNull: false
   },
   address_line2: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING
   },
   city_province: {
     type: Sequelize.STRING,
@@ -27,4 +27,4 @@ const Address = db.define('address', {
   }
 })
 
-module.exports = address
+module.exports = Address
