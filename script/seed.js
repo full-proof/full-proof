@@ -2,12 +2,18 @@
 
 const db = require('../server/db')
 const {User} = require('../server/db/models')
+const {Order} = require('../server/db/models')
+const {Address} = require('../server/db/models')
+const {Product} = require('../server/db/models')
+const {Review} = require('../server/db/models')
+const {UserAddress} = require('../server/db/models')
+const {Category} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
-  const users = await Promise.all([
+  await Promise.all([
     User.create({
       name: 'cody',
       email: 'cody@email.com',
@@ -17,12 +23,49 @@ async function seed() {
       name: 'murphy',
       email: 'murphy@email.com',
       password: '123'
+    }),
+    Order.create({
+      shipStatus: false
+    }),
+    Order.create({
+      shipStatus: false
+    }),
+    Address.create({
+      address_line1: '2228 Hickory Point',
+      address_line2: '2R',
+      city_province: 'Chicago',
+      postalCode: 49024,
+      country: 'Korea'
+    }),
+    Category.create({
+      title: 'Material'
+    }),
+    Category.create({
+      title: 'Color'
+    }),
+    Review.create({
+      content: 'This is review test number one',
+      rating: 3
+    }),
+    Review.create({
+      content: 'This is review test number two',
+      rating: 5
+    }),
+    Product.create({
+      title: 'Dutch Oven',
+      price: 23.14,
+      quantity: 3,
+      description: 'This is a test description',
+      imgUrl: 'test/image/url'
+    }),
+    Product.create({
+      title: 'Mixer',
+      price: 99.99,
+      quantity: 1,
+      description: 'This is a test description',
+      imgUrl: 'test/image/url'
     })
   ])
-
-  const orders = await Promise.all([Order])
-
-  console.log(`seeded ${users.length} users`)
   console.log(`seeded successfully`)
 }
 
