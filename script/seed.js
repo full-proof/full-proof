@@ -20,6 +20,8 @@ async function seed() {
     })
   ])
 
+  const orders = await Promise.all([Order])
+
   console.log(`seeded ${users.length} users`)
   console.log(`seeded successfully`)
 }
