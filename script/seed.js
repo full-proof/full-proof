@@ -13,59 +13,47 @@ async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
-  await Promise.all([
-    User.create({
-      name: 'cody',
-      email: 'cody@email.com',
-      password: '123'
-    }),
-    User.create({
-      name: 'murphy',
-      email: 'murphy@email.com',
-      password: '123'
-    }),
-    Order.create({
-      shipStatus: false
-    }),
-    Order.create({
-      shipStatus: false
-    }),
-    Address.create({
-      address_line1: '2228 Hickory Point',
-      address_line2: '2R',
-      city_province: 'Chicago',
-      postalCode: 49024,
-      country: 'Korea'
-    }),
-    Category.create({
-      title: 'Material'
-    }),
-    Category.create({
-      title: 'Color'
-    }),
-    Review.create({
-      content: 'This is review test number one',
-      rating: 3
-    }),
-    Review.create({
-      content: 'This is review test number two',
-      rating: 5
-    }),
-    Product.create({
-      title: 'Dutch Oven',
-      price: 23.14,
-      quantity: 3,
-      description: 'This is a test description',
-      imgUrl: 'test/image/url'
-    }),
-    Product.create({
-      title: 'Mixer',
-      price: 99.99,
-      quantity: 1,
-      description: 'This is a test description',
-      imgUrl: 'test/image/url'
-    })
-  ])
+  const cody = await User.create({
+    name: 'cody',
+    email: 'cody@email.com',
+    password: '123'
+  })
+
+  const address = await Address.create({
+    address_line1: '2228 Hickory Point',
+    address_line2: '2R',
+    city_province: 'Chicago',
+    postalCode: 49024,
+    country: 'Korea'
+  })
+
+  const order = await Order.create({
+    shipStatus: false
+  })
+
+  const category = await Category.create({
+    title: 'Material'
+  })
+  const review = await Review.create({
+    content: 'This is review test number one',
+    rating: 3
+  })
+  const product = await Product.create({
+    title: 'Dutch Oven',
+    price: 23.14,
+    quantity: 3,
+    description: 'This is a test description',
+    imgUrl: 'test/image/url'
+  })
+
+  await review.setUser(cody)
+  await order.setUser(cody)
+  // this magic method does not actually save association in database..??
+  await cody.hasAddress(address)
+
+  // console.log('This is product magic', Object.keys(product.__proto__))
+  // console.log('This is user magic', Object.keys(cody.__proto__))
+  // console.log('This is review magic', Object.keys(review.__proto__))
   console.log(`seeded successfully`)
 }
 
