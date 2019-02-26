@@ -28,7 +28,7 @@ async function seed() {
   })
 
   const order = await Order.create({
-    shipStatus: false
+    status: 'Shipped'
   })
 
   const category = await Category.create({
