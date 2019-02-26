@@ -16,12 +16,12 @@ install:
 before_script:
   - psql -c 'create database "full-proof-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
 
-# before_deploy:
-#   - npm run build-client # make the bundle
-#   - rm -rf node_modules # omit from the tarball, since we skip cleanup
-# deploy:
-#   skip_cleanup: true # prevents travis from deleting the build
-#   provider: heroku
-#   app: YOUR-HEROKU-APP-NAME-HERE # see README
-#   api_key:
-#     secure: YOUR-***ENCRYPTED***-API-KEY-HERE # see README
+before_deploy:
+  - npm run build-client # make the bundle
+  - rm -rf node_modules # omit from the tarball, since we skip cleanup
+deploy:
+  skip_cleanup: true # prevents travis from deleting the build
+  provider: heroku
+  app: full-proof
+  api_key:
+    secure: 'nBMZPR13ssaHJR35mRNm2Hpz4q2btanM1fOcPLpFnMuwk+xrMH5Wb/jNyhX0xr1ZePGSAzXf+vcBIUHM1O7sS2uXRKXTGCbig9yGDvhX9Hu72DN3wc6pTtmbvCFiT6nNOOd9V0ivOTeM+3Z932M9lYuFjq48tL9RHVo5SMDQNW7iR+dtdhgVFkpQQjsuLNHaFe2KjyYjEca0NDZxB/PQXYvGrpR7qtmm4DZxNAZ1mONdN0+ymtdEaT1F5phHiesYKqXRZAYt7rG+Lo8JnUxyIkApuyuz1AfoRPa/RRrJ32C/oQiM39+ReiI1+xFN7vyA30pcxi6L/YBU2giNQTDEigR5fFlk6oK9XHOmfHWlp5DASciyKV2pTzKplfA+sCgv0uddJTOZzROohVSog1dA3sYzGiEGhrmPOgMONWDK0f3ratBcJY5QKYpWOsgDV7X95KvT7GbvhMDSOBgZ/Ro73RUTekakcNIzAjyioSdpfK2TgC9JWIhP8Z6cInwc9rYh43XVSvdIdVi0JeVPWm/1/IkRgZfuh6mkNNj8N0PjiG8+OmVYP/NOorq9SHrlO/YnSMnvCewJukoXvm7Waxgkc6AHawI6y9Fb1mGJDsSjGwcXfOedTifDZtErRHug2y1AsiouBi19nhyYYNAMWE0d2aDL6wuJMp8sz0PAxcUIP9k='
