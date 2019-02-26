@@ -4,6 +4,7 @@ const UserAddress = require('./UserAddress')
 const Product = require('./Product')
 const Order = require('./Order')
 const Category = require('./Category')
+const Review = require('./Review')
 
 User.belongsToMany(Address, {through: UserAddress})
 Address.belongsToMany(User, {through: UserAddress})
@@ -22,5 +23,6 @@ module.exports = {
   UserAddress,
   Order,
   Product,
-  Category
+  Category,
+  Review
 }
