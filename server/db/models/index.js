@@ -3,7 +3,7 @@ const Address = require('./Address')
 const UserAddress = require('./UserAddress')
 const Product = require('./Product')
 const Order = require('./Order')
-const Category = require('./category')
+const Category = require('./Category')
 
 User.belongsToMany(Address, {through: UserAddress})
 Address.belongsToMany(User, {through: UserAddress})

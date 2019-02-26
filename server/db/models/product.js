@@ -4,7 +4,7 @@ const db = require('../db')
 const Product = db.define('product', {
   title: {
     type: Sequelize.STRING,
-    allowNull: false,
+    allowNull: false
   },
   price: {
     //make sure it logs two decimal places for dollar amount
@@ -22,5 +22,6 @@ const Product = db.define('product', {
 module.exports = Product
 
 Product.prototype.decrementQuantity = function(num) {
-  return Product.quantity = Product.quantity - num
+  Product.quantity = Product.quantity - num
+  return Product.quantity
 }
