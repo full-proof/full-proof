@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {Login, Signup, UserHome, AllProducts} from './components'
+import {Login, Signup, UserHome, AllProducts, AllUsers} from './components'
 import {me} from './store'
 
 class Main extends Component {
@@ -17,6 +17,8 @@ class Main extends Component {
       <Switch>
         {/* Routes placed here are available to all visitors */}
         <Route path="/products" component={AllProducts} />
+        <Route path="/users" component={AllUsers} />
+        {/* todo: Move into the switch */}
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         {isLoggedIn && (
