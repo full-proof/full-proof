@@ -4,7 +4,7 @@ import history from '../history'
 /**
  * ACTION TYPES
  */
-const GET_USER = 'GET_USER'
+const FETCH_USER = 'FETCH_USER'
 const REMOVE_USER = 'REMOVE_USER'
 
 /**
@@ -15,7 +15,7 @@ const defaultUser = {}
 /**
  * ACTION CREATORS
  */
-const getUser = user => ({type: GET_USER, user})
+const fetchUser = user => ({type: FETCH_USER, user})
 const removeUser = () => ({type: REMOVE_USER})
 
 /**
@@ -24,7 +24,7 @@ const removeUser = () => ({type: REMOVE_USER})
 export const me = () => async dispatch => {
   try {
     const res = await axios.get('/auth/me')
-    dispatch(getUser(res.data || defaultUser))
+    dispatch(fetchUser(res.data || defaultUser))
   } catch (err) {
     console.error(err)
   }
@@ -35,11 +35,11 @@ export const auth = (email, password, method) => async dispatch => {
   try {
     res = await axios.post(`/auth/${method}`, {email, password})
   } catch (authError) {
-    return dispatch(getUser({error: authError}))
+    return dispatch(fetchUser({error: authError}))
   }
 
   try {
-    dispatch(getUser(res.data))
+    dispatch(fetchUser(res.data))
     history.push('/home')
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
@@ -61,7 +61,7 @@ export const logout = () => async dispatch => {
  */
 export default function(state = defaultUser, action) {
   switch (action.type) {
-    case GET_USER:
+    case FETCH_USER:
       return action.user
     case REMOVE_USER:
       return defaultUser
