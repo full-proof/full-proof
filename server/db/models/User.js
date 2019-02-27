@@ -5,20 +5,34 @@ const db = require('../db')
 const User = db.define('user', {
   name: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
   },
   email: {
     type: Sequelize.STRING,
+    isEmail: true,
     unique: true,
-    allowNull: false
+    validate: {
+      isEmail: true
+    }
   },
   password: {
     type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    },
     // Making `.password` act like a func hides it when serializing to JSON.
     // This is a hack to get around Sequelize's lack of a "private" option.
     get() {
       return () => this.getDataValue('password')
     }
+  },
+  passwordExpired: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
   },
   salt: {
     type: Sequelize.STRING,

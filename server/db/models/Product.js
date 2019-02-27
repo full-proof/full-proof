@@ -4,24 +4,37 @@ const db = require('../db')
 const Product = db.define('product', {
   title: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
   },
   price: {
-    //make sure it logs two decimal places for dollar amount
+    // Make sure it logs two decimal places for dollar amount
     type: Sequelize.FLOAT,
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0
   },
   quantity: {
     type: Sequelize.INTEGER,
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0
   },
-  description: Sequelize.TEXT,
-  imgUrl: Sequelize.STRING
+  description: {
+    type: Sequelize.TEXT,
+    defaultValue: 'This product has no description.'
+  },
+  imgUrl: {
+    type: Sequelize.STRING,
+    defaultValue: 'bread.jpg'
+  }
 })
 
 module.exports = Product
 
 Product.prototype.decrementQuantity = function(num) {
-  Product.quantity = Product.quantity - num
-  return Product.quantity
+  if (Product.quantity > num) {
+    Product.quantity = Product.quantity - num
+    return Product.quantity
+  }
 }
