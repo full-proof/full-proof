@@ -74,7 +74,7 @@ async function seed() {
     price: 23.14,
     quantity: 3,
     description: 'This is a test description',
-    imgUrl: 'dutch-oven.jpg'
+    imgUrl: '/dutch-oven.jpg'
   })
 
   await Product.create({
@@ -82,7 +82,7 @@ async function seed() {
     price: 13.14,
     quantity: 2,
     description: 'This is a test description',
-    imgUrl: 'basting-brushes.jpg'
+    imgUrl: '/basting-brushes.jpg'
   })
 
   await Product.create({
@@ -90,7 +90,7 @@ async function seed() {
     price: 10.99,
     quantity: 10,
     description: 'This is a test description',
-    imgUrl: 'bench-knife.jpg'
+    imgUrl: '/bench-knife.jpg'
   })
 
   await Product.create({
@@ -98,7 +98,7 @@ async function seed() {
     price: 4.99,
     quantity: 15,
     description: 'This is a test description',
-    imgUrl: 'cookie-cutters.jpg'
+    imgUrl: '/cookie-cutters.jpg'
   })
 
   await Product.create({
@@ -106,7 +106,7 @@ async function seed() {
     price: 199.99,
     quantity: 5,
     description: 'This is a test description',
-    imgUrl: 'mixer.jpg'
+    imgUrl: '/mixer.jpg'
   })
 
   await Product.create({
@@ -114,7 +114,7 @@ async function seed() {
     price: 7.99,
     quantity: 50,
     description: 'This is a test description',
-    imgUrl: 'plastic-dough-scraper.jpg'
+    imgUrl: '/plastic-dough-scraper.jpg'
   })
 
   await Product.create({
@@ -122,7 +122,7 @@ async function seed() {
     price: 8.99,
     quantity: 30,
     description: 'This is a test description',
-    imgUrl: 'whisk.jpg'
+    imgUrl: '/whisk.jpg'
   })
 
   await review.setUser(cody)
