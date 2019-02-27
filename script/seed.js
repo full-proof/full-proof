@@ -16,6 +16,37 @@ async function seed() {
   const cody = await User.create({
     name: 'cody',
     email: 'cody@email.com',
+    password: '123',
+    isAdmin: true
+  })
+
+  await User.create({
+    name: 'Jan',
+    email: 'jan@email.com',
+    password: '123'
+  })
+
+  await User.create({
+    name: 'Anna',
+    email: 'anna@email.com',
+    password: '123'
+  })
+
+  await User.create({
+    name: 'Delilah',
+    email: 'delilah@email.com',
+    password: '123'
+  })
+
+  await User.create({
+    name: 'Tom',
+    email: 'tom@email.com',
+    password: '123'
+  })
+
+  await User.create({
+    name: 'Garrett',
+    email: 'garrett@email.com',
     password: '123'
   })
 
@@ -43,7 +74,55 @@ async function seed() {
     price: 23.14,
     quantity: 3,
     description: 'This is a test description',
-    imgUrl: 'test/image/url'
+    imgUrl: 'dutch-oven.jpg'
+  })
+
+  await Product.create({
+    title: 'Basting Brushes',
+    price: 13.14,
+    quantity: 2,
+    description: 'This is a test description',
+    imgUrl: 'basting-brushes.jpg'
+  })
+
+  await Product.create({
+    title: 'Bench Knife',
+    price: 10.99,
+    quantity: 10,
+    description: 'This is a test description',
+    imgUrl: 'bench-knife.jpg'
+  })
+
+  await Product.create({
+    title: 'Cookie Cutters',
+    price: 4.99,
+    quantity: 15,
+    description: 'This is a test description',
+    imgUrl: 'cookie-cutters.jpg'
+  })
+
+  await Product.create({
+    title: 'Mixer',
+    price: 199.99,
+    quantity: 5,
+    description: 'This is a test description',
+    imgUrl: 'mixer.jpg'
+  })
+
+  await Product.create({
+    title: 'Plastic Dough Scraper',
+    price: 7.99,
+    quantity: 50,
+    description: 'This is a test description',
+    imgUrl: 'plastic-dough-scraper.jpg'
+  })
+
+  await Product.create({
+    title: 'Whisk',
+    price: 8.99,
+    quantity: 30,
+    description: 'This is a test description',
+    imgUrl: 'whisk.jpg'
   })
 
   await review.setUser(cody)
