@@ -1,7 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import Table from 'react-bootstrap/Table'
-import Checkbox from 'react-bootstrap/Checkbox'
+import {Table, Checkbox} from 'react-bootstrap'
 
 const AllUsers = props => {
   const users = props.users
@@ -35,3 +34,18 @@ const AllUsers = props => {
     </Table>
   )
 }
+
+const mapStateToProps = state => {
+  return {
+    users: state.users
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    toggleAdmin: () => {}, //todo
+    togglePasswordExpired: () => {} //todo
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AllUsers)
