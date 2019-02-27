@@ -16,6 +16,37 @@ async function seed() {
   const cody = await User.create({
     name: 'cody',
     email: 'cody@email.com',
+    password: '123',
+    isAdmin: true
+  })
+
+  await User.create({
+    name: 'Jan',
+    email: 'jan@email.com',
+    password: '123'
+  })
+
+  await User.create({
+    name: 'Anna',
+    email: 'anna@email.com',
+    password: '123'
+  })
+
+  await User.create({
+    name: 'Delilah',
+    email: 'delilah@email.com',
+    password: '123'
+  })
+
+  await User.create({
+    name: 'Tom',
+    email: 'tom@email.com',
+    password: '123'
+  })
+
+  await User.create({
+    name: 'Garrett',
+    email: 'garrett@email.com',
     password: '123'
   })
 
