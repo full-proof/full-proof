@@ -5,17 +5,19 @@ import {fetchProductThunk} from '../store/product'
 
 export class SingleProduct extends React.Component {
   componentDidMount() {
-    console.log('component did mount', this.props)
     this.props.fetchProduct(this.props.match.params.id)
   }
 
   render() {
     const product = this.props.singleProduct
-    console.log(this.props)
+    console.log(product)
+
     return (
       <div>
         <Card key={product.id} style={{width: '30rem'}}>
-          <Card.Img variant="top" src={product.imgUrl} />
+          {product.imgUrl ? (
+            <Card.Img variant="top" src={product.imgUrl} />
+          ) : null}
           <Card.Body>
             <Card.Title>{product.title}</Card.Title>
             <Card.Text>{product.description}</Card.Text>
