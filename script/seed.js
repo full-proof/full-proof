@@ -59,7 +59,7 @@ async function seed() {
   })
 
   const order = await Order.create({
-    status: 'Shipped'
+    status: 'Completed'
   })
 
   const category = await Category.create({
