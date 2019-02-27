@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Card, ListGroup, ListGroupItem} from 'react-bootstrap'
 import {fetchProductsThunk} from '../store/product'
@@ -11,7 +10,6 @@ export class AllProducts extends React.Component {
 
   render() {
     const products = this.props.products
-    console.log(this.props)
     return (
       <div>
         {products.map(product => (
@@ -26,7 +24,9 @@ export class AllProducts extends React.Component {
               <ListGroupItem>{product.quantity}</ListGroupItem>
             </ListGroup>
             <Card.Body>
-              <Card.Link href="#">Product Detail</Card.Link>
+              <Card.Link href={`/products/${product.id}`}>
+                Product Detail
+              </Card.Link>
               <Card.Link href="#">Place in Cart</Card.Link>
               {/* {product.review.rating} */}
             </Card.Body>
