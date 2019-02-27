@@ -24,7 +24,6 @@ export const fetchProductsThunk = () => async dispatch => {
 }
 
 export const fetchProductThunk = id => async dispatch => {
-  console.log('this is id passed to thunk', id)
   const {data} = await axios.get(`/api/products/${id}`)
   dispatch(fetchProduct(data))
 }
