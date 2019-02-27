@@ -10,11 +10,10 @@ const setAllUsers = users => ({type: SET_ALL_USERS, users})
 export const fetchAllUsers = () => {
   return async dispatch => {
     try {
-      console.log('hitting')
-      const {data} = await axios.fetch('/api/users')
+      const {data} = await axios.get('/api/users')
       dispatch(setAllUsers(data))
     } catch (err) {
-      console.err(err)
+      console.error(err)
     }
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {Table, Checkbox} from 'react-bootstrap'
+import {Table, InputGroup} from 'react-bootstrap'
 import {fetchAllUsers} from '../store/allUsers'
 
 const allTheUsers = [
@@ -14,51 +14,54 @@ const allTheUsers = [
   }
 ]
 
-export class AllUsers extends React.Component {
+class AllUsers extends React.Component {
   componentDidMount() {
-    console.log('component did mount?')
     this.props.fetchAllUsers()
   }
 
   render() {
-    console.log('all the users', allTheUsers)
-    const users = allTheUsers
+    const users = this.props.allUsers
 
     return (
-      <h1>Hello</h1>
-      // <Table striped bordered hover>
-      //   <thead>
-      //     <tr>
-      //       <th>Name</th>
-      //       <th>Email</th>
-      //       <th>Is Administrator</th>
-      //       <th>Password Expired</th>
-      //     </tr>
-      //   </thead>
-      //   <tbody>
-      //     {users.map(user => {
-      //       return (
-      //         <tr key={user.id}>
-      //           <td>{user.name}</td>
-      //           <td>{user.email}</td>
-      //           <td>
-      //             <Checkbox checked={user.isAdmin} />
-      //           </td>
-      //           <td>
-      //             <Checkbox checked={user.passwordExpired} />
-      //           </td>
-      //         </tr>
-      //       )
-      //     })}
-      //   </tbody>
-      // </Table>
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Is Administrator</th>
+            <th>Password Expired</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map(user => {
+            return (
+              <tr key={user.id}>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td>
+                  <InputGroup.Checkbox
+                    checked={user.isAdmin}
+                    onChange={this.props.toggleAdmin}
+                  />
+                </td>
+                <td>
+                  <InputGroup.Checkbox
+                    checked={user.passwordExpired}
+                    onChange={this.props.togglePasswordExpired}
+                  />
+                </td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </Table>
     )
   }
 }
 
 const mapStateToProps = state => {
   return {
-    users: state.allUsers
+    allUsers: state.allUsers
   }
 }
 
