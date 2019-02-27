@@ -125,6 +125,12 @@ async function seed() {
     imgUrl: 'whisk.jpg'
   })
 
+  for (let i = 0; i < 1000; i++) {
+    await Product.create({
+      // https://www.npmjs.com/package/faker
+    })
+  }
+
   await review.setUser(cody)
   await order.setUser(cody)
   // this magic method does not actually save association in database..??

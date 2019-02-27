@@ -30,9 +30,31 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
+const updatableFields = ['firstName', 'lastName', 'age']
+const adminUpdatableFields = [...updatedUser, 'isAdmin']
+
+req.body === {firstName: 'collin'}
+req.body === {firstName: ''}
+req.body === {firstName: undefined}
+req.body === {}
+userRecord.update({
+  firstName: undefined,
+  lastName: 'Miller',
+})
+userRecord.update({
+  lastName: 'Miller'
+})
 router.put('/:id', async (req, res, next) => {
   const id = req.params.id
-  const updateInfo = req.body
+  let updateInfo
+  if (req.user.isAdmin) {
+    updateInfo = pick(req.body, adminUpdatableFields)
+  }
+  else {
+    updateInfo = pick(req.body, updatableFields)
+  }
+  // { isAdmin: true }
+  // { createdAt: <1000 years ago> }
   try {
     const user = await User.findById(id)
     const updatedUser = await user.update(updateInfo)
@@ -42,7 +64,19 @@ router.put('/:id', async (req, res, next) => {
   }
 })
 
-router.delete('/:id', async (req, res, next) => {
+// ../util.js
+function requireAdmin (req, res, next) {
+  if (req.user && req.user.isAdmin) {
+    next()
+  }
+  else {
+    res.sendStatus(403)
+  }
+}
+
+
+router.delete('/:id', requireAdmin, async (req, res, next) => {
+  // REVIEW: access control
   const id = req.params.id
   try {
     await User.destroy({where: {id}})
@@ -51,3 +85,6 @@ router.delete('/:id', async (req, res, next) => {
     next(err)
   }
 })
+
+
+

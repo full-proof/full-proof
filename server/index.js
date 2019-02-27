@@ -1,3 +1,17 @@
+//window.location.origin + img.src
+//  <img src="http://localhost:3000/images/one.jpg">
+//
+//product {
+//  imageUrl: "http://
+//}
+//
+//window.location.href + img.src
+//<img src="images/one.jpg">
+//  <script src
+//  <link href
+//  <a href
+
+
 const path = require('path')
 const express = require('express')
 const morgan = require('morgan')

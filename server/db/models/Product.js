@@ -15,6 +15,25 @@ const Product = db.define('product', {
     allowNull: false,
     defaultValue: 0
   },
+
+  //try {
+  //  const result = await sequelize.transaction(async function (t) => {
+  //    const aProduct = await Product.findByPk(1, { transation: t })
+  //    await aProduct.update({
+  //      quantity: aProduct.quantity + 10
+  //    }, { transaction: t })
+  //  })
+  //}
+  //catch (err) {
+  //  // res.send(xxx)
+  //}
+
+
+  // REVIEW: discuss inventory
+  // aProduct.update({ quantity: 100 })
+  // if (we have enough) {
+  //   aProduct.update({ quantity: aProduct.quantity - order.quantity })
+  // }
   quantity: {
     type: Sequelize.INTEGER,
     allowNull: false,
