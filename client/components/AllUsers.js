@@ -1,18 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {Table, InputGroup} from 'react-bootstrap'
-import {fetchAllUsers} from '../store/allUsers'
-
-const allTheUsers = [
-  {
-    id: 1,
-    name: 'cody',
-    email: 'cody@email.com',
-    password: '123',
-    isAdmin: true
-  }
-]
+import {Table} from 'react-bootstrap'
+import {fetchAllUsers, updateUser} from '../store/allUsers'
 
 class AllUsers extends React.Component {
   componentDidMount() {
@@ -42,14 +32,21 @@ class AllUsers extends React.Component {
                   <input
                     type="checkbox"
                     checked={user.isAdmin}
-                    onChange={this.props.toggleAdmin}
+                    onChange={() =>
+                      this.props.toggleAdmin(user.id, !user.isAdmin)
+                    }
                   />
                 </td>
                 <td>
                   <input
                     type="checkbox"
                     checked={user.passwordExpired}
-                    onChange={this.props.togglePasswordExpired}
+                    onChange={() =>
+                      this.props.togglePasswordExpired(
+                        user.id,
+                        !user.passwordExpired
+                      )
+                    }
                   />
                 </td>
               </tr>
@@ -70,8 +67,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     fetchAllUsers: () => dispatch(fetchAllUsers()),
-    toggleAdmin: () => {}, //todo
-    togglePasswordExpired: () => {} //todo
+    toggleAdmin: (userId, isAdmin) => dispatch(updateUser(userId, {isAdmin})),
+    togglePasswordExpired: (userId, passwordExpired) =>
+      dispatch(updateUser(userId, {passwordExpired}))
   }
 }
 
