@@ -39,13 +39,15 @@ class AllUsers extends React.Component {
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>
-                  <InputGroup.Checkbox
+                  <input
+                    type="checkbox"
                     checked={user.isAdmin}
                     onChange={this.props.toggleAdmin}
                   />
                 </td>
                 <td>
-                  <InputGroup.Checkbox
+                  <input
+                    type="checkbox"
                     checked={user.passwordExpired}
                     onChange={this.props.togglePasswordExpired}
                   />
