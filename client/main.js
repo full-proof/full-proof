@@ -4,6 +4,7 @@ import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {Login, Signup, UserHome, AllProducts, AllUsers} from './components'
 import {me} from './store'
+import {SingleProduct} from './components/SingleProduct'
 
 class Main extends Component {
   componentDidMount() {
@@ -18,7 +19,8 @@ class Main extends Component {
         {/* Routes placed here are available to all visitors */}
         <Route path="/products" component={AllProducts} />
         <Route path="/users" component={AllUsers} />
-        {/* todo: Move into the switch */}
+        <Route exact path="/products" component={AllProducts} />
+        <Route path="/products/:id" component={SingleProduct} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         {isLoggedIn && (
