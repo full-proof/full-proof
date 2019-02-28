@@ -4,6 +4,8 @@ import axios from 'axios'
 
 const FETCH_PRODUCTS = 'FETCH_PRODUCTS'
 const SELECT_PRODUCT = 'SELECT_PRODUCT'
+const FETCH_CATEGORIES = 'FETCH_CATEGORIES'
+const FILTER_PRODUCTS = 'FILTER_PRODUCTS'
 
 // ACTION CREATORS
 const fetchProducts = products => ({
@@ -14,6 +16,16 @@ const fetchProducts = products => ({
 const fetchProduct = product => ({
   type: SELECT_PRODUCT,
   product
+})
+
+const fetchCategories = categories => ({
+  type: FETCH_CATEGORIES,
+  categories
+})
+
+export const filterProducts = category => ({
+  type: FILTER_PRODUCTS,
+  category
 })
 
 // THUNKS
@@ -28,16 +40,36 @@ export const fetchProductThunk = id => async dispatch => {
   dispatch(fetchProduct(data))
 }
 
+export const fetchCategoriesThunk = () => async dispatch => {
+  const {data} = await axios.get('/api/products/categories')
+  dispatch(fetchCategories(data))
+}
+
 // REDUCER
 const initialState = {
   allProducts: [],
-  singleProduct: {}
+  filteredProducts: [],
+  singleProduct: {},
+  categories: []
 }
 
 const products = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_PRODUCTS:
-      return {...state, allProducts: action.products}
+      return {
+        ...state,
+        allProducts: action.products,
+        filteredProducts: action.products
+      }
+    case FILTER_PRODUCTS:
+      return {
+        ...state,
+        filteredProducts: state.allProducts.filter(product =>
+          product.categories.includes(action.category)
+        )
+      }
+    case FETCH_CATEGORIES:
+      return {...state, categories: action.categories}
     case SELECT_PRODUCT:
       return {...state, singleProduct: action.product}
     default:
