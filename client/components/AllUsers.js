@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {Table} from 'react-bootstrap'
-import {fetchAllUsers, updateUser} from '../store/allUsers'
+import {Table, Button} from 'react-bootstrap'
+import {fetchAllUsers, updateUser, deleteUser} from '../store/allUsers'
 
 class AllUsers extends React.Component {
   componentDidMount() {
@@ -20,6 +20,7 @@ class AllUsers extends React.Component {
             <th>Email</th>
             <th>Is Administrator</th>
             <th>Password Expired</th>
+            <th>Delete User</th>
           </tr>
         </thead>
         <tbody>
@@ -49,6 +50,16 @@ class AllUsers extends React.Component {
                     }
                   />
                 </td>
+                <td>
+                  <Button
+                    variant="danger"
+                    onClick={() => {
+                      this.props.deleteUser(user.id)
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </td>
               </tr>
             )
           })}
@@ -69,7 +80,8 @@ const mapDispatchToProps = dispatch => {
     fetchAllUsers: () => dispatch(fetchAllUsers()),
     toggleAdmin: (userId, isAdmin) => dispatch(updateUser(userId, {isAdmin})),
     togglePasswordExpired: (userId, passwordExpired) =>
-      dispatch(updateUser(userId, {passwordExpired}))
+      dispatch(updateUser(userId, {passwordExpired})),
+    deleteUser: userId => dispatch(deleteUser(userId))
   }
 }
 
