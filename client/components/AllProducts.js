@@ -35,7 +35,6 @@ export class AllProducts extends React.Component {
     const products = this.props.filteredProducts || []
     console.log('these are propSSS', this.props)
     const categories = this.props.categories || []
-
     return (
       <div>
         <ButtonGroup type="checkbox" value={this.state.filterByCategory}>
