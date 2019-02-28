@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Table} from 'react-bootstrap'
+import {Table, Button} from 'react-bootstrap'
 import {fetchOrdersThunk} from '../store/orders'
 
 export class AllOrders extends React.Component {
@@ -9,8 +9,7 @@ export class AllOrders extends React.Component {
   }
 
   render() {
-    const orders = this.props.orders
-    console.log(orders)
+    const orders = this.props.allOrders
     return (
       <Table striped bordered hover>
         <thead>
@@ -19,6 +18,7 @@ export class AllOrders extends React.Component {
             <th>Status</th>
             <th>Order Date</th>
             <th>User</th>
+            <th>Details</th>
           </tr>
         </thead>
         <tbody>
@@ -28,7 +28,12 @@ export class AllOrders extends React.Component {
                 <td>{order.id}</td>
                 <td>{order.status}</td>
                 <td>{order.createdAt}</td>
-                <td>{order.user.name}</td>
+                <td>
+                  <a href={`/users/${order.user.id}`}>{order.user.name}</a>
+                </td>
+                <td>
+                  <Button href={`/orders/${order.id}`}>View Details</Button>
+                </td>
               </tr>
             )
           })}
@@ -40,7 +45,7 @@ export class AllOrders extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    orders: state.orders
+    allOrders: state.orders.allOrders
   }
 }
 

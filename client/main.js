@@ -9,7 +9,8 @@ import {
   AllProducts,
   AllUsers,
   SingleProduct,
-  AllOrders
+  AllOrders,
+  SingleOrder
 } from './components'
 import {me} from './store'
 
@@ -25,9 +26,10 @@ class Main extends Component {
       <Switch>
         {/* Routes placed here are available to all visitors */}
         <Route path="/users" component={AllUsers} />
-        <Route path="/orders" component={AllOrders} />
-        <Route exact path="/products/:id" component={SingleProduct} />
+        <Route exact path="/orders" component={AllOrders} />
+        <Route path="/orders/:id" component={SingleOrder} />
         <Route exact path="/products" component={AllProducts} />
+        <Route exact path="/products/:id" component={SingleProduct} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         {isLoggedIn && (
