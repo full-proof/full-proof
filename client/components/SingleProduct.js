@@ -23,7 +23,7 @@ export class SingleProduct extends React.Component {
     const product = this.props.singleProduct
     return (
       <div>
-        <Card key={product.id} style={{width: '50rem'}}>
+        <Card key={product.id} style={{width: '40rem'}}>
           {product.imgUrl ? (
             <Card.Img variant="top" src={product.imgUrl} />
           ) : null}

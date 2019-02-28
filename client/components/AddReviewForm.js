@@ -16,7 +16,7 @@ export class AddReviewForm extends React.Component {
       <Form>
         <Col>
           <Form.Group controlId="exampleForm.ControlSelect1">
-            <Form.Label>Example select</Form.Label>
+            <Form.Label>Rating</Form.Label>
             <Form.Control as="select">
               <option>1</option>
               <option>2</option>
@@ -28,11 +28,11 @@ export class AddReviewForm extends React.Component {
         </Col>
         <Col>
           <Form.Group controlId="exampleForm.ControlTextarea1">
-            <Form.Label>Example textarea</Form.Label>
+            <Form.Label>Comments</Form.Label>
             <Form.Control as="textarea" rows="3" />
           </Form.Group>
-          <Button variant="success">Add Your Review!</Button>
         </Col>
+        <Button variant="success">Add Your Review!</Button>
       </Form>
     )
   }
