@@ -89,6 +89,7 @@ async function seed() {
   const category = await Category.create({
     title: 'Material'
   })
+
   const review = await Review.create({
     content: 'This is review test number one',
     rating: 3
@@ -101,8 +102,6 @@ async function seed() {
     description: 'This is a test description',
     imgUrl: '/dutch-oven.jpg'
   })
-
-
 
   const bastingBrushes = await Product.create({
     title: 'Basting Brushes',
@@ -151,8 +150,8 @@ async function seed() {
     description: 'This is a test description',
     imgUrl: '/whisk.jpg'
   })
-  
-    const newProducts = await Promise.all(
+
+  const newProducts = await Promise.all(
     productsSeedData.map(newProduct => {
       return Product.create(newProduct)
     })
@@ -176,13 +175,14 @@ async function seed() {
   })
 
   await cody.hasAddress(address)
-  
-  
+
   const newReviews = await Promise.all(
     reviewsSeedData.map(newReview => {
       return Review.create(newReview)
     })
   )
+
+  await dutchOven.addCategory(category)
 
   await newReviews[0].setUser[newUsers[0]]
 
