@@ -4,6 +4,7 @@ import axios from 'axios'
 
 const FETCH_ORDERS = 'FETCH_ORDERS'
 const FETCH_SINGLE_ORDER = 'FETCH_SINGLE_ORDER'
+const SORT_ORDERS = 'SORT_ORDERS'
 
 // ACTION CREATORS
 const fetchOrders = orders => ({
@@ -16,6 +17,11 @@ const fetchSingleOrder = order => ({
   order
 })
 
+export const sortOrders = statusArr => ({
+  type: SORT_ORDERS,
+  statusArr
+})
+
 // THUNKS
 
 export const fetchOrdersThunk = () => async dispatch => {
@@ -24,7 +30,6 @@ export const fetchOrdersThunk = () => async dispatch => {
 }
 
 export const fetchSingleOrderThunk = id => async dispatch => {
-  console.log('this is the thunk')
   const {data} = await axios.get(`/api/orders/${id}`)
   dispatch(fetchSingleOrder(data))
 }
@@ -33,6 +38,7 @@ export const fetchSingleOrderThunk = id => async dispatch => {
 
 const initialState = {
   allOrders: [],
+  filteredOrders: [],
   singleOrder: {}
 }
 
@@ -40,7 +46,14 @@ const orders = (state = initialState, action) => {
   // refactor after changing initial state (and change AllOrder accordingly)
   switch (action.type) {
     case FETCH_ORDERS:
-      return {...state, allOrders: action.orders}
+      return {...state, filteredOrders: action.orders, allOrders: action.orders}
+    case SORT_ORDERS:
+      return {
+        ...state,
+        filteredOrders: state.allOrders.filter(order =>
+          action.statusArr.includes(order.status)
+        )
+      }
     case FETCH_SINGLE_ORDER:
       return {...state, singleOrder: action.order}
     default:
