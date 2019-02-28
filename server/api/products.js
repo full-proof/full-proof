@@ -1,13 +1,24 @@
 const router = require('express').Router()
-const {Product, Review, User} = require('../db/models')
+const {Product, Review, Category, User} = require('../db/models')
+
 module.exports = router
 
 router.get('/', async (req, res, next) => {
   try {
     const allProducts = await Product.findAll({
-      include: [Review]
+      include: [Review, Category]
     })
     res.json(allProducts)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.get('/categories', async (req, res, next) => {
+  // authorize
+  try {
+    const categories = await Category.findAll()
+    res.json(categories)
   } catch (err) {
     next(err)
   }
@@ -47,6 +58,16 @@ router.post('/', async (req, res, next) => {
       imgUrl: req.body.imgUrl
     })
     res.json(newProduct)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.post('/categories', async (req, res, next) => {
+  // authorize
+  try {
+    const newCategory = await Category.create(req.body)
+    res.json(newCategory)
   } catch (err) {
     next(err)
   }
