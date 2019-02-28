@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Table} from 'react-bootstrap'
+import {Table, Button} from 'react-bootstrap'
 import {fetchOrdersThunk} from '../store/orders'
 
 export class AllOrders extends React.Component {
@@ -18,16 +18,22 @@ export class AllOrders extends React.Component {
             <th>Status</th>
             <th>Order Date</th>
             <th>User</th>
+            <th>Details</th>
           </tr>
         </thead>
         <tbody>
           {orders.map(order => {
             return (
-              <tr key={order.id} href={`/orders/${order.id}`}>
+              <tr key={order.id}>
                 <td>{order.id}</td>
                 <td>{order.status}</td>
                 <td>{order.createdAt}</td>
-                <td>{order.user.name}</td>
+                <td>
+                  <a href={`/users/${order.user.id}`}>{order.user.name}</a>
+                </td>
+                <td>
+                  <Button href={`/orders/${order.id}`}>View Details</Button>
+                </td>
               </tr>
             )
           })}
