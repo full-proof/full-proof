@@ -19,6 +19,7 @@ User.hasMany(Order)
 Product.hasMany(Category)
 
 Product.hasMany(Review)
+Review.belongsTo(Product)
 
 Review.belongsTo(User)
 

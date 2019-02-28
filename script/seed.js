@@ -8,6 +8,9 @@ const {Product} = require('../server/db/models')
 const {Review} = require('../server/db/models')
 const {UserAddress} = require('../server/db/models')
 const {Category} = require('../server/db/models')
+const ProductsSeedData = require('./SEED_DATA_Products')
+const UsersSeedData = require('./SEED_DATA_Users')
+const ReviewsSeedData = require('./SEED_DATA_Reviews')
 
 async function seed() {
   await db.sync({force: true})
@@ -69,6 +72,7 @@ async function seed() {
     content: 'This is review test number one',
     rating: 3
   })
+
   const product = await Product.create({
     title: 'Dutch Oven',
     price: 23.14,
@@ -76,6 +80,8 @@ async function seed() {
     description: 'This is a test description',
     imgUrl: '/dutch-oven.jpg'
   })
+
+  const newUsers = await User.bulkCreate(UsersSeedData)
 
   await Product.create({
     title: 'Basting Brushes',
@@ -125,14 +131,38 @@ async function seed() {
     imgUrl: '/whisk.jpg'
   })
 
+  const newProducts = await Product.bulkCreate(ProductsSeedData)
+
   await review.setUser(cody)
   await order.setUser(cody)
   // this magic method does not actually save association in database..??
   await cody.hasAddress(address)
-
   // console.log('This is product magic', Object.keys(product.__proto__))
   // console.log('This is user magic', Object.keys(cody.__proto__))
   // console.log('This is review magic', Object.keys(review.__proto__))
+
+  const newReviews = await Review.bulkCreate(ReviewsSeedData)
+
+  await Promise.all(
+    newReviews.map(reviewToAssign => {
+      const randomUserIdx = Math.floor(Math.random() * (newUsers.length - 1))
+      const randomUser = newUsers[randomUserIdx]
+
+      return reviewToAssign.setUser(randomUser)
+    })
+  )
+
+  await Promise.all(
+    newReviews.map(reviewToAssign => {
+      const randomProductIdx = Math.floor(
+        Math.random() * (newProducts.length - 1)
+      )
+      const randomProduct = newProducts[randomProductIdx]
+
+      return reviewToAssign.setProduct(randomProduct)
+    })
+  )
+
   console.log(`seeded successfully`)
 }
 

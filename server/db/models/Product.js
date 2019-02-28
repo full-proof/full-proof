@@ -26,7 +26,7 @@ const Product = db.define('product', {
   },
   imgUrl: {
     type: Sequelize.STRING,
-    defaultValue: 'bread.jpg'
+    defaultValue: '/dutch-oven.jpg'
   }
 })
 
