@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const FETCH_ORDERS = 'FETCH_ORDERS'
 const FETCH_SINGLE_ORDER = 'FETCH_SINGLE_ORDER'
-const SORT_ORDERS = 'SORT_ORDERS'
+const FILTER_ORDERS = 'FILTER_ORDERS'
 
 // ACTION CREATORS
 const fetchOrders = orders => ({
@@ -17,8 +17,8 @@ const fetchSingleOrder = order => ({
   order
 })
 
-export const sortOrders = statusArr => ({
-  type: SORT_ORDERS,
+export const filterOrders = statusArr => ({
+  type: FILTER_ORDERS,
   statusArr
 })
 
@@ -47,7 +47,7 @@ const orders = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_ORDERS:
       return {...state, filteredOrders: action.orders, allOrders: action.orders}
-    case SORT_ORDERS:
+    case FILTER_ORDERS:
       return {
         ...state,
         filteredOrders: state.allOrders.filter(order =>

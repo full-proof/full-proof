@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Table, Button, ToggleButtonGroup, ToggleButton} from 'react-bootstrap'
-import {fetchOrdersThunk, sortOrders} from '../store/orders'
+import {fetchOrdersThunk, filterOrders} from '../store/orders'
 
 export class AllOrders extends React.Component {
   constructor(props) {
@@ -81,7 +81,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     fetchOrders: () => dispatch(fetchOrdersThunk()),
-    sortOrders: sortByStatus => dispatch(sortOrders(sortByStatus))
+    sortOrders: sortByStatus => dispatch(filterOrders(sortByStatus))
   }
 }
 
