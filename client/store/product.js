@@ -23,9 +23,9 @@ const fetchCategories = categories => ({
   categories
 })
 
-export const filterProducts = categoryArr => ({
-  type: FILTER_CATEGORIES,
-  categoryArr
+export const filterProducts = category => ({
+  type: FILTER_PRODUCTS,
+  category
 })
 
 // THUNKS
@@ -56,9 +56,18 @@ const initialState = {
 const products = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_PRODUCTS:
-      return {...state, allProducts: action.products}
+      return {
+        ...state,
+        allProducts: action.products,
+        filteredProducts: action.products
+      }
     case FILTER_PRODUCTS:
-      return {...state}
+      return {
+        ...state,
+        filteredProducts: state.allProducts.filter(product =>
+          product.categories.includes(action.category)
+        )
+      }
     case FETCH_CATEGORIES:
       return {...state, categories: action.categories}
     case SELECT_PRODUCT:

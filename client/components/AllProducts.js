@@ -4,16 +4,20 @@ import {
   Card,
   ListGroup,
   ListGroupItem,
-  ToggleButtonGroup,
-  ToggleButton
+  ButtonGroup,
+  Button
 } from 'react-bootstrap'
-import {fetchProductsThunk, fetchCategoriesThunk} from '../store/product'
+import {
+  fetchProductsThunk,
+  fetchCategoriesThunk,
+  filterProducts
+} from '../store/product'
 
 export class AllProducts extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      sortByCategory: []
+      filterByCategory: ''
     }
     this.handleChange = this.handleChange.bind(this)
   }
@@ -21,30 +25,30 @@ export class AllProducts extends React.Component {
     this.props.fetchProducts()
     this.props.fetchCategories()
   }
-  handleChange(categoryArr) {
-    this.setState({sortByCategory: categoryArr}, () => {
-      this.props.sortByCategory(this.state.sortByCategory)
+  handleChange(event) {
+    this.setState({filterByCategory: event}, () => {
+      this.props.filterProducts(this.state.filterByCategory)
     })
   }
 
   render() {
-    const products = this.props.products
+    const products = this.props.filteredProducts || []
+    console.log('these are propSSS', this.props)
     const categories = this.props.categories || []
-    console.log('cats', categories)
-    console.log('props', this.props)
+
     return (
       <div>
-        <ToggleButtonGroup
-          type="checkbox"
-          value={this.state.sortByCategory}
-          onChange={this.handleChange}
-        >
+        <ButtonGroup type="checkbox" value={this.state.filterByCategory}>
           {categories.map(category => (
-            <ToggleButton key={category.id} value={category.title}>
+            <Button
+              key={category.id}
+              onClick={this.handleChange}
+              value={category.title}
+            >
               {category.title}
-            </ToggleButton>
+            </Button>
           ))}
-        </ToggleButtonGroup>
+        </ButtonGroup>
         {/* {need to dynamize} */}
         {products.map(product => (
           <Card key={product.id} style={{width: '18rem'}}>
@@ -74,6 +78,7 @@ export class AllProducts extends React.Component {
 const mapStateToProps = state => {
   return {
     products: state.products.allProducts,
+    filteredProducts: state.products.filteredProducts,
     categories: state.products.categories
   }
 }
@@ -81,7 +86,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     fetchProducts: () => dispatch(fetchProductsThunk()),
-    fetchCategories: () => dispatch(fetchCategoriesThunk())
+    fetchCategories: () => dispatch(fetchCategoriesThunk()),
+    filterProducts: category => dispatch(filterProducts(category))
   }
 }
 
