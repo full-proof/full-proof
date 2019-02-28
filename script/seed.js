@@ -1,16 +1,23 @@
+/* eslint-disable max-statements */
 'use strict'
 
 const db = require('../server/db')
-const {User} = require('../server/db/models')
-const {Order} = require('../server/db/models')
-const {Address} = require('../server/db/models')
-const {Product} = require('../server/db/models')
-const {Review} = require('../server/db/models')
-const {UserAddress} = require('../server/db/models')
-const {Category} = require('../server/db/models')
+
+const {
+  User,
+  Order,
+  Address,
+  Product,
+  Review,
+  UserAddress,
+  Category,
+  OrderedProducts
+} = require('../server/db/models')
 const productsSeedData = require('./SEED_DATA_Products')
 const usersSeedData = require('./SEED_DATA_Users')
 const reviewsSeedData = require('./SEED_DATA_Reviews')
+
+const Sequelize = require('sequelize')
 
 async function seed() {
   await db.sync({force: true})
@@ -71,6 +78,14 @@ async function seed() {
     status: 'Completed'
   })
 
+  const completedOrder = await Order.create({status: 'Completed'})
+
+  const processingOrder = await Order.create({status: 'Processing'})
+
+  const cancelledOrder = await Order.create({status: 'Cancelled'})
+
+  const inCartOrder = await Order.create({status: 'In Cart'})
+
   const category = await Category.create({
     title: 'Material'
   })
@@ -79,7 +94,7 @@ async function seed() {
     rating: 3
   })
 
-  const product = await Product.create({
+  const dutchOven = await Product.create({
     title: 'Dutch Oven',
     price: 23.14,
     quantity: 3,
@@ -87,52 +102,57 @@ async function seed() {
     imgUrl: '/dutch-oven.jpg'
   })
 
-  // await Promise.all(
-  //   Product.create({
-  //     title: 'Basting Brushes',
-  //     price: 13.14,
-  //     quantity: 2,
-  //     description: 'This is a test description',
-  //     imgUrl: '/basting-brushes.jpg'
-  //   }),
-  //   Product.create({
-  //     title: 'Bench Knife',
-  //     price: 10.99,
-  //     quantity: 10,
-  //     description: 'This is a test description',
-  //     imgUrl: '/bench-knife.jpg'
-  //   }),
-  //   Product.create({
-  //     title: 'Cookie Cutters',
-  //     price: 4.99,
-  //     quantity: 15,
-  //     description: 'This is a test description',
-  //     imgUrl: '/cookie-cutters.jpg'
-  //   }),
-  //   Product.create({
-  //     title: 'Mixer',
-  //     price: 199.99,
-  //     quantity: 5,
-  //     description: 'This is a test description',
-  //     imgUrl: '/mixer.jpg'
-  //   }),
-  //   Product.create({
-  //     title: 'Plastic Dough Scraper',
-  //     price: 7.99,
-  //     quantity: 50,
-  //     description: 'This is a test description',
-  //     imgUrl: '/plastic-dough-scraper.jpg'
-  //   }),
-  //   Product.create({
-  //     title: 'Whisk',
-  //     price: 8.99,
-  //     quantity: 30,
-  //     description: 'This is a test description',
-  //     imgUrl: '/whisk.jpg'
-  //   })
-  // )
 
-  const newProducts = await Promise.all(
+
+  const bastingBrushes = await Product.create({
+    title: 'Basting Brushes',
+    price: 13.14,
+    quantity: 2,
+    description: 'This is a test description',
+    imgUrl: '/basting-brushes.jpg'
+  })
+
+  const benchKnife = await Product.create({
+    title: 'Bench Knife',
+    price: 10.99,
+    quantity: 10,
+    description: 'This is a test description',
+    imgUrl: '/bench-knife.jpg'
+  })
+
+  const cookieCutters = await Product.create({
+    title: 'Cookie Cutters',
+    price: 4.99,
+    quantity: 15,
+    description: 'This is a test description',
+    imgUrl: '/cookie-cutters.jpg'
+  })
+
+  const mixer = await Product.create({
+    title: 'Mixer',
+    price: 199.99,
+    quantity: 5,
+    description: 'This is a test description',
+    imgUrl: '/mixer.jpg'
+  })
+
+  const plasticDoughScraper = await Product.create({
+    title: 'Plastic Dough Scraper',
+    price: 7.99,
+    quantity: 50,
+    description: 'This is a test description',
+    imgUrl: '/plastic-dough-scraper.jpg'
+  })
+
+  const whisk = await Product.create({
+    title: 'Whisk',
+    price: 8.99,
+    quantity: 30,
+    description: 'This is a test description',
+    imgUrl: '/whisk.jpg'
+  })
+  
+    const newProducts = await Promise.all(
     productsSeedData.map(newProduct => {
       return Product.create(newProduct)
     })
@@ -140,12 +160,24 @@ async function seed() {
 
   await review.setUser(cody)
   await order.setUser(cody)
-  // this magic method does not actually save association in database..??
-  await cody.hasAddress(address)
-  // console.log('This is product magic', Object.keys(product.__proto__))
-  // console.log('This is user magic', Object.keys(cody.__proto__))
-  // console.log('This is review magic', Object.keys(review.__proto__))
+  await completedOrder.setUser(cody)
+  await processingOrder.setUser(cody)
+  await cancelledOrder.setUser(cody)
+  await inCartOrder.setUser(cody)
 
+  await completedOrder.addProduct(dutchOven, {
+    through: {quantity: 2}
+  })
+  await completedOrder.addProduct(whisk, {
+    through: {quantity: 1}
+  })
+  await completedOrder.addProduct(bastingBrushes, {
+    through: {quantity: 6}
+  })
+
+  await cody.hasAddress(address)
+  
+  
   const newReviews = await Promise.all(
     reviewsSeedData.map(newReview => {
       return Review.create(newReview)
