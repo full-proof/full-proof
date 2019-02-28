@@ -41,7 +41,7 @@ export class SingleProduct extends React.Component {
             {this.state.toggleReview ? <AddReviewForm /> : null}
           </Card.Body>
 
-          <Reviews />
+          <Reviews reviews={product.reviews} />
         </Card>
       </div>
     )

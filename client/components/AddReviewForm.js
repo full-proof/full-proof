@@ -6,18 +6,38 @@ export class AddReviewForm extends React.Component {
     super()
     this.state = {
       content: '',
-      rating: 0
+      rating: 1
     }
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
   componentDidMount() {}
 
+  handleSubmit(event) {
+    console.log('this is state', this.state)
+    event.preventDefault()
+    this.setState({
+      content: '',
+      rating: 1
+    })
+  }
+
+  handleChange(event) {
+    this.setState({[event.target.name]: event.target.value})
+  }
+
   render() {
     return (
-      <Form>
+      <Form onSubmit={this.handleSubmit}>
         <Col>
           <Form.Group controlId="exampleForm.ControlSelect1">
             <Form.Label>Rating</Form.Label>
-            <Form.Control as="select">
+            <Form.Control
+              as="select"
+              name="rating"
+              value={this.state.rating}
+              onChange={this.handleChange}
+            >
               <option>1</option>
               <option>2</option>
               <option>3</option>
@@ -29,10 +49,16 @@ export class AddReviewForm extends React.Component {
         <Col>
           <Form.Group controlId="exampleForm.ControlTextarea1">
             <Form.Label>Comments</Form.Label>
-            <Form.Control as="textarea" rows="3" />
+            <Form.Control
+              as="textarea"
+              rows="3"
+              name="content"
+              value={this.state.content}
+              onChange={this.handleChange}
+            />
           </Form.Group>
         </Col>
-        <Button variant="success">Add Your Review!</Button>
+        <Button type="submit">Add Your Review!</Button>
       </Form>
     )
   }
