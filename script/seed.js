@@ -8,9 +8,9 @@ const {Product} = require('../server/db/models')
 const {Review} = require('../server/db/models')
 const {UserAddress} = require('../server/db/models')
 const {Category} = require('../server/db/models')
-const ProductsSeedData = require('./SEED_DATA_Products')
-const UsersSeedData = require('./SEED_DATA_Users')
-const ReviewsSeedData = require('./SEED_DATA_Reviews')
+const productsSeedData = require('./SEED_DATA_Products')
+const usersSeedData = require('./SEED_DATA_Users')
+const reviewsSeedData = require('./SEED_DATA_Reviews')
 
 async function seed() {
   await db.sync({force: true})
@@ -53,6 +53,12 @@ async function seed() {
     password: '123'
   })
 
+  const newUsers = await Promise.all(
+    usersSeedData.map(newUser => {
+      return User.create(newUser)
+    })
+  )
+
   const address = await Address.create({
     address_line1: '2228 Hickory Point',
     address_line2: '2R',
@@ -81,57 +87,56 @@ async function seed() {
     imgUrl: '/dutch-oven.jpg'
   })
 
-  const newUsers = await User.bulkCreate(UsersSeedData)
+  // await Promise.all(
+  //   Product.create({
+  //     title: 'Basting Brushes',
+  //     price: 13.14,
+  //     quantity: 2,
+  //     description: 'This is a test description',
+  //     imgUrl: '/basting-brushes.jpg'
+  //   }),
+  //   Product.create({
+  //     title: 'Bench Knife',
+  //     price: 10.99,
+  //     quantity: 10,
+  //     description: 'This is a test description',
+  //     imgUrl: '/bench-knife.jpg'
+  //   }),
+  //   Product.create({
+  //     title: 'Cookie Cutters',
+  //     price: 4.99,
+  //     quantity: 15,
+  //     description: 'This is a test description',
+  //     imgUrl: '/cookie-cutters.jpg'
+  //   }),
+  //   Product.create({
+  //     title: 'Mixer',
+  //     price: 199.99,
+  //     quantity: 5,
+  //     description: 'This is a test description',
+  //     imgUrl: '/mixer.jpg'
+  //   }),
+  //   Product.create({
+  //     title: 'Plastic Dough Scraper',
+  //     price: 7.99,
+  //     quantity: 50,
+  //     description: 'This is a test description',
+  //     imgUrl: '/plastic-dough-scraper.jpg'
+  //   }),
+  //   Product.create({
+  //     title: 'Whisk',
+  //     price: 8.99,
+  //     quantity: 30,
+  //     description: 'This is a test description',
+  //     imgUrl: '/whisk.jpg'
+  //   })
+  // )
 
-  await Product.create({
-    title: 'Basting Brushes',
-    price: 13.14,
-    quantity: 2,
-    description: 'This is a test description',
-    imgUrl: '/basting-brushes.jpg'
-  })
-
-  await Product.create({
-    title: 'Bench Knife',
-    price: 10.99,
-    quantity: 10,
-    description: 'This is a test description',
-    imgUrl: '/bench-knife.jpg'
-  })
-
-  await Product.create({
-    title: 'Cookie Cutters',
-    price: 4.99,
-    quantity: 15,
-    description: 'This is a test description',
-    imgUrl: '/cookie-cutters.jpg'
-  })
-
-  await Product.create({
-    title: 'Mixer',
-    price: 199.99,
-    quantity: 5,
-    description: 'This is a test description',
-    imgUrl: '/mixer.jpg'
-  })
-
-  await Product.create({
-    title: 'Plastic Dough Scraper',
-    price: 7.99,
-    quantity: 50,
-    description: 'This is a test description',
-    imgUrl: '/plastic-dough-scraper.jpg'
-  })
-
-  await Product.create({
-    title: 'Whisk',
-    price: 8.99,
-    quantity: 30,
-    description: 'This is a test description',
-    imgUrl: '/whisk.jpg'
-  })
-
-  const newProducts = await Product.bulkCreate(ProductsSeedData)
+  const newProducts = await Promise.all(
+    productsSeedData.map(newProduct => {
+      return Product.create(newProduct)
+    })
+  )
 
   await review.setUser(cody)
   await order.setUser(cody)
@@ -141,13 +146,18 @@ async function seed() {
   // console.log('This is user magic', Object.keys(cody.__proto__))
   // console.log('This is review magic', Object.keys(review.__proto__))
 
-  const newReviews = await Review.bulkCreate(ReviewsSeedData)
+  const newReviews = await Promise.all(
+    reviewsSeedData.map(newReview => {
+      return Review.create(newReview)
+    })
+  )
+
+  await newReviews[0].setUser[newUsers[0]]
 
   await Promise.all(
     newReviews.map(reviewToAssign => {
       const randomUserIdx = Math.floor(Math.random() * (newUsers.length - 1))
       const randomUser = newUsers[randomUserIdx]
-
       return reviewToAssign.setUser(randomUser)
     })
   )
