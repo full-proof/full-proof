@@ -22,14 +22,14 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const tempReview = Review.build({
+    const newReview = await Review.create({
       content: req.body.review.content,
       rating: req.body.review.rating
     })
-    tempReview.setProduct(req.body.productId)
-    tempReview.setUser(req.body.userId)
 
-    const newReview = await tempReview.save()
+    await newReview.setProduct(req.body.productId)
+    await newReview.setUser(req.body.userId)
+
     res.json(newReview)
   } catch (err) {
     next(err)

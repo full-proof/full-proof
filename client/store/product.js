@@ -43,7 +43,6 @@ export const addReviewThunk = (productId, user, review) => async dispatch => {
   const newReview = data
 
   newReview.user = {name: user.name}
-  console.log('newReview', newReview)
   dispatch(addReview(newReview))
 }
 
@@ -61,7 +60,7 @@ const products = (state = initialState, action) => {
       return {...state, singleProduct: action.product}
     case ADD_REVIEW:
       const newSingleProduct = {...state.singleProduct}
-      newSingleProduct.reviews.push(action.newReview)
+      newSingleProduct.reviews.unshift(action.newReview)
       return {...state, singleProduct: newSingleProduct}
     default:
       return state
