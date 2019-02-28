@@ -2,6 +2,7 @@
 'use strict'
 
 const db = require('../server/db')
+
 const {
   User,
   Order,
@@ -12,14 +13,11 @@ const {
   Category,
   OrderedProducts
 } = require('../server/db/models')
-const Sequelize = require('sequelize')
+const productsSeedData = require('./SEED_DATA_Products')
+const usersSeedData = require('./SEED_DATA_Users')
+const reviewsSeedData = require('./SEED_DATA_Reviews')
 
-// const {Order} = require('../server/db/models')
-// const {Address} = require('../server/db/models')
-// const {Product} = require('../server/db/models')
-// const {Review} = require('../server/db/models')
-// const {UserAddress} = require('../server/db/models')
-// const {Category} = require('../server/db/models')
+const Sequelize = require('sequelize')
 
 async function seed() {
   await db.sync({force: true})
@@ -62,6 +60,12 @@ async function seed() {
     password: '123'
   })
 
+  const newUsers = await Promise.all(
+    usersSeedData.map(newUser => {
+      return User.create(newUser)
+    })
+  )
+
   const address = await Address.create({
     address_line1: '2228 Hickory Point',
     address_line2: '2R',
@@ -89,6 +93,7 @@ async function seed() {
     content: 'This is review test number one',
     rating: 3
   })
+
   const dutchOven = await Product.create({
     title: 'Dutch Oven',
     price: 23.14,
@@ -96,6 +101,8 @@ async function seed() {
     description: 'This is a test description',
     imgUrl: '/dutch-oven.jpg'
   })
+
+
 
   const bastingBrushes = await Product.create({
     title: 'Basting Brushes',
@@ -144,6 +151,12 @@ async function seed() {
     description: 'This is a test description',
     imgUrl: '/whisk.jpg'
   })
+  
+    const newProducts = await Promise.all(
+    productsSeedData.map(newProduct => {
+      return Product.create(newProduct)
+    })
+  )
 
   await review.setUser(cody)
   await order.setUser(cody)
@@ -163,6 +176,35 @@ async function seed() {
   })
 
   await cody.hasAddress(address)
+  
+  
+  const newReviews = await Promise.all(
+    reviewsSeedData.map(newReview => {
+      return Review.create(newReview)
+    })
+  )
+
+  await newReviews[0].setUser[newUsers[0]]
+
+  await Promise.all(
+    newReviews.map(reviewToAssign => {
+      const randomUserIdx = Math.floor(Math.random() * (newUsers.length - 1))
+      const randomUser = newUsers[randomUserIdx]
+      return reviewToAssign.setUser(randomUser)
+    })
+  )
+
+  await Promise.all(
+    newReviews.map(reviewToAssign => {
+      const randomProductIdx = Math.floor(
+        Math.random() * (newProducts.length - 1)
+      )
+      const randomProduct = newProducts[randomProductIdx]
+
+      return reviewToAssign.setProduct(randomProduct)
+    })
+  )
+
   console.log(`seeded successfully`)
 }
 

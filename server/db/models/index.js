@@ -19,7 +19,9 @@ User.hasMany(Order)
 Product.hasMany(Category)
 
 Product.hasMany(Review)
+Review.belongsTo(Product)
 
+User.hasMany(Review)
 Review.belongsTo(User)
 
 module.exports = {
