@@ -31,7 +31,9 @@ export class SingleOrder extends React.Component {
             {
               <tr key={order.id}>
                 <td>{order.id}</td>
-                <td>{order.user.name}</td>
+                <td>
+                  <a href={`/users/${order.user.id}`}>{order.user.name}</a>
+                </td>
                 <td>{order.status}</td>
                 <td>{order.createdAt}</td>
               </tr>
@@ -52,7 +54,9 @@ export class SingleOrder extends React.Component {
             {productArray.map(product => (
               <tr key={product.id}>
                 <td>{product.id}</td>
-                <td>{product.title}</td>
+                <td>
+                  <a href={`/products/${product.id}`}>{product.title}</a>
+                </td>
                 <td>{product.price}</td>
                 <td>{product.quantity}</td>
               </tr>
