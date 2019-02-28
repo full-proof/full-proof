@@ -21,7 +21,7 @@ router.get('/:id', async (req, res, next) => {
       include: [{model: User}]
     })
     const products = await order.getProducts()
-    res.json(products)
+    res.json({order, products})
   } catch (err) {
     next(err)
   }

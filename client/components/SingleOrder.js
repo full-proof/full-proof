@@ -9,31 +9,34 @@ export class SingleOrder extends React.Component {
   }
 
   render() {
-    console.log(this.props)
-    const productArray = this.props.singleOrder
+    console.log('props', this.props)
+    const order = this.props.singleOrder.order || {}
+    console.log('order', order)
+    const productArray = this.props.singleOrder.products || []
 
-    return (
-      <p>Hey</p>
-      // order.user ? <Table striped bordered hover>
-      //   <thead>
-      //     <tr>
-      //       <th>Order Number</th>
-      //       <th>Status</th>
-      //       <th>Order Date</th>
-      //       <th>User</th>
-      //     </tr>
-      //   </thead>
-      //   <tbody>
-      //     {
-      //       <tr key={order.id}>
-      //         <td>{order.id}</td>
-      //         <td>{order.status}</td>
-      //         <td>{order.createdAt}</td>
-      //         <td>{order.user.name}</td>
-      //       </tr>
-      //     }
-      //   </tbody>
-      // </Table> : <p>Loading</p>
+    return order.user ? (
+      <Table striped bordered hover>
+        <thead>
+          <tr>
+            <th>Order Number</th>
+            <th>Status</th>
+            <th>Order Date</th>
+            <th>User</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            <tr key={order.id}>
+              <td>{order.id}</td>
+              <td>{order.status}</td>
+              <td>{order.createdAt}</td>
+              <td>{order.user.name}</td>
+            </tr>
+          }
+        </tbody>
+      </Table>
+    ) : (
+      <p>Loading</p>
     )
   }
 }
