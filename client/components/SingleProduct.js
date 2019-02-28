@@ -10,8 +10,6 @@ export class SingleProduct extends React.Component {
 
   render() {
     const product = this.props.singleProduct
-    console.log(product)
-
     return (
       <div>
         <Card key={product.id} style={{width: '30rem'}}>

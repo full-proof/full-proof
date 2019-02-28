@@ -9,8 +9,7 @@ export class AllOrders extends React.Component {
   }
 
   render() {
-    const orders = this.props.orders
-    console.log(orders)
+    const orders = this.props.allOrders
     return (
       <Table striped bordered hover>
         <thead>
@@ -24,7 +23,7 @@ export class AllOrders extends React.Component {
         <tbody>
           {orders.map(order => {
             return (
-              <tr key={order.id}>
+              <tr key={order.id} href={`/orders/${order.id}`}>
                 <td>{order.id}</td>
                 <td>{order.status}</td>
                 <td>{order.createdAt}</td>
@@ -40,7 +39,7 @@ export class AllOrders extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    orders: state.orders
+    allOrders: state.orders.allOrders
   }
 }
 

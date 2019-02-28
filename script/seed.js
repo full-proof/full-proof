@@ -162,56 +162,7 @@ async function seed() {
     through: {quantity: 6}
   })
 
-  // await dutchOven.setOrders([
-  //   completedOrder,
-  //   processingOrder,
-  //   cancelledOrder,
-  //   inCartOrder
-  // ])
-  // await bastingBrushes.setOrders([
-  //   completedOrder,
-  //   processingOrder,
-  //   cancelledOrder,
-  //   inCartOrder
-  // ])
-  // await whisk.setOrders([
-  //   completedOrder,
-  //   processingOrder,
-  //   cancelledOrder,
-  //   inCartOrder
-  // ])
-  // await plasticDoughScraper.setOrders([
-  //   completedOrder,
-  //   processingOrder,
-  //   cancelledOrder,
-  //   inCartOrder
-  // ])
-  // await mixer.setOrders([
-  //   completedOrder,
-  //   processingOrder,
-  //   cancelledOrder,
-  //   inCartOrder
-  // ])
-  // await cookieCutters.addOrders(
-  //   [completedOrder, processingOrder, cancelledOrder, inCartOrder],
-  //   {
-  //     through: {
-  //       price: 10.99,
-  //       quantity: 1
-  //     }
-  //   }
-  // )
-  // await benchKnife.addOrders(
-  //   [completedOrder, processingOrder, cancelledOrder, inCartOrder],
-  //   {through: OrderedProducts}
-  // )
-
-  // this magic method does not actually save association in database..??
   await cody.hasAddress(address)
-
-  // console.log('This is product magic', Object.keys(dutchOven.__proto__))
-  // console.log('This is user magic', Object.keys(cody.__proto__))
-  // console.log('This is review magic', Object.keys(review.__proto__))
   console.log(`seeded successfully`)
 }
 
