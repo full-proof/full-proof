@@ -20,6 +20,7 @@ export const fetchOrdersThunk = () => async dispatch => {
 // REDUCER
 
 const orders = (state = [], action) => {
+  // refactor after changing initial state (and change AllOrder accordingly)
   switch (action.type) {
     case FETCH_ORDERS:
       return action.orders
