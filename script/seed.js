@@ -191,7 +191,7 @@ async function seed() {
   ]
 
   const newOrders = await Promise.all(
-    Array(1)
+    Array(200)
       .fill(null)
       .map(() => {
         const randomChoice = Math.round(
@@ -214,7 +214,7 @@ async function seed() {
 
   await Promise.all(
     newOrders.map(orderToPopulate => {
-      const numberProducts = 200 //Math.round(Math.random() * 14) + 1
+      const numberProducts = Math.round(Math.random() * 14) + 1
       const alreadyOrdered = {}
       return Array(numberProducts)
         .fill(null)
