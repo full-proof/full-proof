@@ -5,6 +5,10 @@ const OrderedProducts = db.define('orderedProducts', {
   quantity: {
     type: Sequelize.INTEGER,
     defaultValue: 0
+  },
+  price: {
+    type: Sequelize.FLOAT,
+    allowNull: false
   }
 })
 

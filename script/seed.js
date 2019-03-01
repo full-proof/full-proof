@@ -102,8 +102,6 @@ async function seed() {
     imgUrl: '/dutch-oven.jpg'
   })
 
-
-
   const bastingBrushes = await Product.create({
     title: 'Basting Brushes',
     price: 13.14,
@@ -151,8 +149,8 @@ async function seed() {
     description: 'This is a test description',
     imgUrl: '/whisk.jpg'
   })
-  
-    const newProducts = await Promise.all(
+
+  const newProducts = await Promise.all(
     productsSeedData.map(newProduct => {
       return Product.create(newProduct)
     })
@@ -165,30 +163,88 @@ async function seed() {
   await cancelledOrder.setUser(cody)
   await inCartOrder.setUser(cody)
 
-  await completedOrder.addProduct(dutchOven, {
-    through: {quantity: 2}
-  })
-  await completedOrder.addProduct(whisk, {
-    through: {quantity: 1}
-  })
-  await completedOrder.addProduct(bastingBrushes, {
-    through: {quantity: 6}
-  })
+  // await completedOrder.addProduct(dutchOven, {
+  //   through: {quantity: 2, price: 49.99}
+  // })
+  // await completedOrder.addProduct(whisk, {
+  //   through: {quantity: 1, price: 15.25}
+  // })
+  // await completedOrder.addProduct(bastingBrushes, {
+  //   through: {quantity: 6, price: 3.5}
+  // })
 
   await cody.hasAddress(address)
-  
-  
+
   const newReviews = await Promise.all(
     reviewsSeedData.map(newReview => {
       return Review.create(newReview)
     })
   )
 
-  await newReviews[0].setUser[newUsers[0]]
+  //seed orders
+  const orderStatusChoices = [
+    'Created',
+    'Processing',
+    'Cancelled',
+    'Completed',
+    'In Cart'
+  ]
+
+  const newOrders = await Promise.all(
+    Array(1)
+      .fill(null)
+      .map(() => {
+        const randomChoice = Math.round(
+          Math.random() * (orderStatusChoices.length - 1)
+        )
+
+        const newOrder = {status: orderStatusChoices[randomChoice]}
+
+        return Order.create(newOrder)
+      })
+  )
+
+  await Promise.all(
+    newOrders.map(orderToAssign => {
+      const randomUserIdx = Math.round(Math.random() * (newUsers.length - 1))
+      const randomUser = newUsers[randomUserIdx]
+      return orderToAssign.setUser(randomUser)
+    })
+  )
+
+  await Promise.all(
+    newOrders.map(orderToPopulate => {
+      const numberProducts = 200 //Math.round(Math.random() * 14) + 1
+      const alreadyOrdered = {}
+      return Array(numberProducts)
+        .fill(null)
+        .map(() => {
+          let randomProductIdx
+          do {
+            randomProductIdx = Math.round(
+              Math.random() * (newProducts.length - 1)
+            )
+          } while (alreadyOrdered[randomProductIdx])
+          alreadyOrdered[randomProductIdx] = true
+          const randomProduct = newProducts[randomProductIdx]
+
+          const productQuantity = Math.round(Math.random() * 19) + 1
+
+          const newOrderedProduct = {
+            quantity: productQuantity,
+            price: randomProduct.price
+          }
+
+          return orderToPopulate.addProduct(randomProduct, {
+            through: newOrderedProduct
+          })
+        })
+    })
+  )
 
   await Promise.all(
     newReviews.map(reviewToAssign => {
-      const randomUserIdx = Math.floor(Math.random() * (newUsers.length - 1))
+      const randomUserIdx = Math.round(Math.random() * (newUsers.length - 1))
       const randomUser = newUsers[randomUserIdx]
       return reviewToAssign.setUser(randomUser)
     })
@@ -196,7 +252,7 @@ async function seed() {
 
   await Promise.all(
     newReviews.map(reviewToAssign => {
-      const randomProductIdx = Math.floor(
+      const randomProductIdx = Math.round(
         Math.random() * (newProducts.length - 1)
       )
       const randomProduct = newProducts[randomProductIdx]
