@@ -182,13 +182,73 @@ async function seed() {
     })
   )
 
-  await dutchOven.addCategory(category)
 
-  await newReviews[0].setUser[newUsers[0]]
+  //seed orders
+  const orderStatusChoices = [
+    'Created',
+    'Processing',
+    'Cancelled',
+    'Completed',
+    'In Cart'
+  ]
+
+  const newOrders = await Promise.all(
+    Array(200)
+      .fill(null)
+      .map(() => {
+        const randomChoice = Math.round(
+          Math.random() * (orderStatusChoices.length - 1)
+        )
+
+        const newOrder = {status: orderStatusChoices[randomChoice]}
+
+        return Order.create(newOrder)
+      })
+  )
+
+  await Promise.all(
+    newOrders.map(orderToAssign => {
+      const randomUserIdx = Math.round(Math.random() * (newUsers.length - 1))
+      const randomUser = newUsers[randomUserIdx]
+      return orderToAssign.setUser(randomUser)
+    })
+  )
+
+  await Promise.all(
+    newOrders.map(orderToPopulate => {
+      const numberProducts = Math.round(Math.random() * 14) + 1
+      const alreadyOrdered = {}
+      return Array(numberProducts)
+        .fill(null)
+        .map(() => {
+          let randomProductIdx
+          do {
+            randomProductIdx = Math.round(
+              Math.random() * (newProducts.length - 1)
+            )
+          } while (alreadyOrdered[randomProductIdx])
+          alreadyOrdered[randomProductIdx] = true
+          const randomProduct = newProducts[randomProductIdx]
+
+          const productQuantity = Math.round(Math.random() * 19) + 1
+
+          const newOrderedProduct = {
+            quantity: productQuantity,
+            price: randomProduct.price
+          }
+
+          return orderToPopulate.addProduct(randomProduct, {
+            through: newOrderedProduct
+          })
+        })
+    })
+  )
+
+  await dutchOven.addCategory(category)
 
   await Promise.all(
     newReviews.map(reviewToAssign => {
-      const randomUserIdx = Math.floor(Math.random() * (newUsers.length - 1))
+      const randomUserIdx = Math.round(Math.random() * (newUsers.length - 1))
       const randomUser = newUsers[randomUserIdx]
       return reviewToAssign.setUser(randomUser)
     })
@@ -196,7 +256,7 @@ async function seed() {
 
   await Promise.all(
     newReviews.map(reviewToAssign => {
-      const randomProductIdx = Math.floor(
+      const randomProductIdx = Math.round(
         Math.random() * (newProducts.length - 1)
       )
       const randomProduct = newProducts[randomProductIdx]
