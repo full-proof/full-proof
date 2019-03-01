@@ -20,6 +20,7 @@ router.get('/:id', async (req, res, next) => {
     const order = await Order.findById(req.params.id, {
       include: [{model: User}]
     })
+
     const products = await order.getProducts()
     res.json({order, products})
   } catch (err) {

@@ -57,8 +57,8 @@ export class SingleOrder extends React.Component {
                 <td>
                   <a href={`/products/${product.id}`}>{product.title}</a>
                 </td>
-                <td>{product.price}</td>
-                <td>{product.quantity}</td>
+                <td>{product.orderedProducts.price}</td>
+                <td>{product.orderedProducts.quantity}</td>
               </tr>
             ))}
           </tbody>
