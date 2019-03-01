@@ -165,13 +165,13 @@ async function seed() {
   await inCartOrder.setUser(cody)
 
   await completedOrder.addProduct(dutchOven, {
-    through: {quantity: 2}
+    through: {quantity: 2, price: 2.99}
   })
   await completedOrder.addProduct(whisk, {
-    through: {quantity: 1}
+    through: {quantity: 1, price: 2.99}
   })
   await completedOrder.addProduct(bastingBrushes, {
-    through: {quantity: 6}
+    through: {quantity: 6, price: 2.99}
   })
 
   await cody.hasAddress(address)
