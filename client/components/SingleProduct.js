@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Card, ListGroup, ListGroupItem} from 'react-bootstrap'
-import {fetchProductThunk} from '../store/product'
+import {fetchProductThunk, addReviewThunk} from '../store/product'
 import Reviews from './Reviews'
 import {AddReviewForm} from './AddReviewForm'
 
@@ -38,7 +38,17 @@ export class SingleProduct extends React.Component {
           <Card.Body>
             <Card.Link href="#">Place in Cart</Card.Link>
             <Card.Link onClick={this.handleClick}>Add Review</Card.Link>
-            {this.state.toggleReview ? <AddReviewForm /> : null}
+            {this.state.toggleReview ? (
+              <AddReviewForm
+                addReview={newReview => {
+                  this.props.addReview(
+                    product.id,
+                    this.props.loggedinUser,
+                    newReview
+                  )
+                }}
+              />
+            ) : null}
           </Card.Body>
 
           <Reviews reviews={product.reviews} />
@@ -50,13 +60,16 @@ export class SingleProduct extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    singleProduct: state.products.singleProduct
+    singleProduct: state.products.singleProduct,
+    loggedinUser: state.user
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchProduct: id => dispatch(fetchProductThunk(id))
+    fetchProduct: id => dispatch(fetchProductThunk(id)),
+    addReview: (productId, loggedinUser, review) =>
+      dispatch(addReviewThunk(productId, loggedinUser, review))
   }
 }
 

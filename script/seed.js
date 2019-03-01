@@ -89,6 +89,7 @@ async function seed() {
   const category = await Category.create({
     title: 'Material'
   })
+
   const review = await Review.create({
     content: 'This is review test number one',
     rating: 3
@@ -181,6 +182,7 @@ async function seed() {
     })
   )
 
+
   //seed orders
   const orderStatusChoices = [
     'Created',
@@ -241,6 +243,8 @@ async function seed() {
         })
     })
   )
+
+  await dutchOven.addCategory(category)
 
   await Promise.all(
     newReviews.map(reviewToAssign => {

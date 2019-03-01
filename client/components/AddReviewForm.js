@@ -1,4 +1,5 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import {Form, Button, Col} from 'react-bootstrap'
 
 export class AddReviewForm extends React.Component {
@@ -14,8 +15,8 @@ export class AddReviewForm extends React.Component {
   componentDidMount() {}
 
   handleSubmit(event) {
-    console.log('this is state', this.state)
     event.preventDefault()
+    this.props.addReview(this.state)
     this.setState({
       content: '',
       rating: 1
@@ -66,7 +67,7 @@ export class AddReviewForm extends React.Component {
 
 // const mapStateToProps = state => {
 //   return {
-//     orders: state.orders
+//     reviews: state.products.singleProduct.reviews
 //   }
 // }
 
@@ -76,4 +77,4 @@ export class AddReviewForm extends React.Component {
 //   }
 // }
 
-// export default connect(mapStateToProps, mapDispatchToProps)(AllOrders)
+// export default connect(mapStateToProps, mapDispatchToProps)(AddReviewForm)
