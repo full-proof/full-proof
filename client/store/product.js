@@ -10,7 +10,6 @@ const ADD_REVIEW = 'ADD_REVIEW'
 const FETCH_CATEGORIES = 'FETCH_CATEGORIES'
 const FILTER_PRODUCTS = 'FILTER_PRODUCTS'
 
-
 // ACTION CREATORS
 const fetchProducts = products => ({
   type: FETCH_PRODUCTS,
@@ -21,7 +20,6 @@ const fetchProduct = product => ({
   type: SELECT_PRODUCT,
   product
 })
-
 
 const addReview = newReview => ({
   type: ADD_REVIEW,
@@ -61,7 +59,7 @@ export const addReviewThunk = (productId, user, review) => async dispatch => {
   newReview.user = {name: user.name}
   dispatch(addReview(newReview))
 }
-  
+
 export const fetchCategoriesThunk = () => async dispatch => {
   const {data} = await axios.get('/api/products/categories')
   dispatch(fetchCategories(data))
@@ -84,6 +82,7 @@ const products = (state = initialState, action) => {
         filteredProducts: action.products
       }
     case FILTER_PRODUCTS:
+      //This reducer needs to be adjusted since categories are Category objects on the Products
       return {
         ...state,
         filteredProducts: state.allProducts.filter(product =>

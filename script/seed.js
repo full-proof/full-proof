@@ -90,6 +90,17 @@ async function seed() {
     title: 'Material'
   })
 
+  const newCategories = await Promise.all([
+    Category.create({title: 'New'}),
+    Category.create({title: 'Fun'}),
+    Category.create({title: 'Useful'}),
+    Category.create({title: 'Great Gift'}),
+    Category.create({title: 'Housewarming'}),
+    Category.create({title: 'Whimsical'}),
+    Category.create({title: 'Traditional'}),
+    Category.create({title: 'Puzzling'})
+  ])
+
   const review = await Review.create({
     content: 'This is review test number one',
     rating: 3
@@ -157,6 +168,28 @@ async function seed() {
     })
   )
 
+  await Promise.all(
+    newProducts.map(productToCategorize => {
+      const numberCategories = Math.round(Math.random() * 4) + 1
+      const randomCategories = []
+      const alreadyChosen = {}
+
+      for (let i = 0; i < numberCategories; i++) {
+        let randomCategoryIdx
+        do {
+          randomCategoryIdx = Math.round(
+            Math.random() * (newCategories.length - 1)
+          )
+        } while (alreadyChosen[newCategories[randomCategoryIdx].id])
+
+        const randomCategory = newCategories[randomCategoryIdx]
+        alreadyChosen[randomCategory.id] = true
+        randomCategories.push(randomCategory)
+      }
+      return productToCategorize.addCategories(randomCategories)
+    })
+  )
+
   await review.setUser(cody)
   await order.setUser(cody)
   await completedOrder.setUser(cody)
@@ -181,7 +214,6 @@ async function seed() {
       return Review.create(newReview)
     })
   )
-
 
   //seed orders
   const orderStatusChoices = [
