@@ -50,6 +50,7 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
+    console.log('user??', req.user)
     const newProduct = await Product.create({
       title: req.body.title,
       price: req.body.price,
