@@ -10,6 +10,7 @@ const ADD_REVIEW = 'ADD_REVIEW'
 
 const FETCH_CATEGORIES = 'FETCH_CATEGORIES'
 const FILTER_PRODUCTS_BY_CATEGORY = 'FILTER_PRODUCTS_BY_CATEGORY'
+
 const FILTER_PRODUCTS_BY_TITLE = 'FILTER_PRODUCTS_BY_TITLE'
 
 // ACTION CREATORS
@@ -91,9 +92,12 @@ const products = (state = initialState, action) => {
     case FILTER_PRODUCTS_BY_CATEGORY:
       return {
         ...state,
-        filteredProducts: state.allProducts.filter(product =>
-          product.categories.includes(action.category)
-        )
+        filteredProducts: state.allProducts.filter(product => {
+          const foundCategory = product.categories.find(
+            currentCategory => action.category === currentCategory.title
+          )
+          return foundCategory || false
+        })
       }
     case FILTER_PRODUCTS_BY_TITLE:
       return {

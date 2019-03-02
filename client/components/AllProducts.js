@@ -24,22 +24,23 @@ export class AllProducts extends React.Component {
       filterByTitle: ''
     }
     this.handleChange = this.handleChange.bind(this)
+    this.handleCategoryChange = this.handleCategoryChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
   componentDidMount() {
     this.props.fetchProducts()
     this.props.fetchCategories()
   }
+
+  handleCategoryChange(event) {
+    this.setState({filterByCategory: event.target.value}, () => {
+      this.props.filterProductsByCategory(this.state.filterByCategory)
+    })
+  }
+
   handleChange(event) {
-    console.log('event', event.target.value)
-    // this.setState({filterByCategory: event}, () => {
-    //   // I think the setState is going to have to be the following:
-    //   // this.setState({filterByCategory: event.target.value}
-    //   this.props.filterProductsByCategory(this.state.filterByCategory)
-    // })
-    // console.log('name', event.target.name)
     this.setState({
-      [event.target.name]: event.target.value // () =>
+      [event.target.name]: event.target.value
     })
   }
   handleSubmit(event) {
@@ -60,7 +61,7 @@ export class AllProducts extends React.Component {
           {categories.map(category => (
             <Button
               key={category.id}
-              onClick={this.handleChange}
+              onClick={this.handleCategoryChange}
               value={category.title}
             >
               {category.title}
