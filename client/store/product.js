@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import axios from 'axios'
 
 // ACTION TYPES
@@ -8,8 +9,8 @@ const SELECT_PRODUCT = 'SELECT_PRODUCT'
 const ADD_REVIEW = 'ADD_REVIEW'
 
 const FETCH_CATEGORIES = 'FETCH_CATEGORIES'
-const FILTER_PRODUCTS = 'FILTER_PRODUCTS'
-
+const FILTER_PRODUCTS_BY_CATEGORY = 'FILTER_PRODUCTS_BY_CATEGORY'
+const FILTER_PRODUCTS_BY_TITLE = 'FILTER_PRODUCTS_BY_TITLE'
 
 // ACTION CREATORS
 const fetchProducts = products => ({
@@ -22,7 +23,6 @@ const fetchProduct = product => ({
   product
 })
 
-
 const addReview = newReview => ({
   type: ADD_REVIEW,
   newReview
@@ -33,9 +33,14 @@ const fetchCategories = categories => ({
   categories
 })
 
-export const filterProducts = category => ({
-  type: FILTER_PRODUCTS,
+export const filterProductsByCategory = category => ({
+  type: FILTER_PRODUCTS_BY_CATEGORY,
   category
+})
+
+export const filterProductsByTitle = title => ({
+  type: FILTER_PRODUCTS_BY_TITLE,
+  title
 })
 
 // THUNKS
@@ -61,7 +66,7 @@ export const addReviewThunk = (productId, user, review) => async dispatch => {
   newReview.user = {name: user.name}
   dispatch(addReview(newReview))
 }
-  
+
 export const fetchCategoriesThunk = () => async dispatch => {
   const {data} = await axios.get('/api/products/categories')
   dispatch(fetchCategories(data))
@@ -83,11 +88,18 @@ const products = (state = initialState, action) => {
         allProducts: action.products,
         filteredProducts: action.products
       }
-    case FILTER_PRODUCTS:
+    case FILTER_PRODUCTS_BY_CATEGORY:
       return {
         ...state,
         filteredProducts: state.allProducts.filter(product =>
           product.categories.includes(action.category)
+        )
+      }
+    case FILTER_PRODUCTS_BY_TITLE:
+      return {
+        ...state,
+        filteredProducts: state.filteredProducts.filter(product =>
+          product.title.toLowerCase().includes(action.title.toLowerCase())
         )
       }
     case FETCH_CATEGORIES:
