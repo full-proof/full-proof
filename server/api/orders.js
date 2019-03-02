@@ -30,8 +30,20 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   try {
-    const newOrder = await Order.create(req.body)
-    res.json(newOrder)
+    const userSession = req.session.id
+    const currentProduct = req.body.singleProduct
+    const quantity = req.body.quantity
+    // see if we can eager load order associations here
+    const response = await Order.findOrCreate({
+      where: {session: userSession},
+      defaults: {status: 'In Cart', session: userSession}
+    })
+    const currentOrder = response[0]
+    const magicProduct = await Product.findById(currentProduct.id)
+    await currentOrder.addProduct(magicProduct, {
+      through: {quantity: quantity, price: magicProduct.price}
+    })
+    res.json(currentOrder)
   } catch (err) {
     next(err)
   }

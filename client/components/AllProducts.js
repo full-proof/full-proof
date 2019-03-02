@@ -12,6 +12,7 @@ import {
   fetchCategoriesThunk,
   filterProducts
 } from '../store/product'
+import {Link} from 'react-router-dom'
 
 export class AllProducts extends React.Component {
   constructor(props) {
@@ -61,9 +62,7 @@ export class AllProducts extends React.Component {
               <ListGroupItem>{product.quantity}</ListGroupItem>
             </ListGroup>
             <Card.Body>
-              <Card.Link href={`/products/${product.id}`}>
-                Product Detail
-              </Card.Link>
+              <Link to={`/products/${product.id}`}>Product Detail</Link>
               <Card.Link href="#">Place in Cart</Card.Link>
               {/* {product.review.rating} */}
             </Card.Body>

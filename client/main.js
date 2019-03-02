@@ -10,7 +10,8 @@ import {
   AllUsers,
   SingleProduct,
   AllOrders,
-  SingleOrder
+  SingleOrder,
+  Cart
 } from './components'
 import {me} from './store'
 
@@ -28,6 +29,7 @@ class Main extends Component {
         <Route path="/users" component={AllUsers} />
         <Route exact path="/orders" component={AllOrders} />
         <Route path="/orders/:id" component={SingleOrder} />
+        <Route path="/cart" component={Cart} />
         <Route exact path="/products" component={AllProducts} />
         <Route exact path="/products/:id" component={SingleProduct} />
         <Route path="/login" component={Login} />

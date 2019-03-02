@@ -10,6 +10,9 @@ const Order = db.define('order', {
       'Completed',
       'In Cart'
     )
+  },
+  session: {
+    type: Sequelize.STRING
   }
 })
 

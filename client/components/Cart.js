@@ -1,16 +1,16 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Table} from 'react-bootstrap'
-import {fetchSingleOrderThunk} from '../store/orders'
+// import {fetchCart} from '../store/orders'
 
-export class SingleOrder extends React.Component {
+export class Cart extends React.Component {
   componentDidMount() {
-    this.props.fetchSingleOrderThunk(this.props.match.params.id)
+    this.props.fetchCart()
   }
 
   render() {
-    const order = this.props.singleOrder.order || {}
-    const productArray = this.props.singleOrder.products || []
+    const order = this.props.cart || {}
+    // const productArray = this.props.singleOrder.products || []
 
     return order.user ? (
       <div>
@@ -38,7 +38,7 @@ export class SingleOrder extends React.Component {
           </tbody>
         </Table>
         <h3>Products in Order</h3>
-        <Table striped bordered hover>
+        {/* <Table striped bordered hover>
           <thead>
             <tr>
               <th>Product ID</th>
@@ -59,7 +59,7 @@ export class SingleOrder extends React.Component {
               </tr>
             ))}
           </tbody>
-        </Table>
+        </Table> */}
       </div>
     ) : (
       <p>Loading</p>
@@ -69,14 +69,14 @@ export class SingleOrder extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    singleOrder: state.orders.singleOrder
+    cart: state.orders.cart
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchSingleOrderThunk: id => dispatch(fetchSingleOrderThunk(id))
+    fetchCart: () => dispatch(fetchCart())
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SingleOrder)
+export default connect(mapStateToProps, mapDispatchToProps)(Cart)
