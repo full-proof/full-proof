@@ -58,11 +58,15 @@ export class AllProducts extends React.Component {
               <Card.Text>{product.description}</Card.Text>
             </Card.Body>
             <ListGroup className="list-group-flush">
-              <ListGroupItem>{product.price}</ListGroupItem>
-              <ListGroupItem>{product.quantity}</ListGroupItem>
+              <ListGroupItem>
+                <strong>Price:</strong> ${product.price}
+              </ListGroupItem>
+              <ListGroupItem>
+                <strong>Quantity:</strong> {product.quantity}
+              </ListGroupItem>
             </ListGroup>
             <Card.Body>
-              <Link to={`/products/${product.id}`}>Product Detail</Link>
+              <Link to={`/products/${product.id}`}>Product Details</Link>
               <Card.Link href="#">Place in Cart</Card.Link>
               {/* {product.review.rating} */}
             </Card.Body>
