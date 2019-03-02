@@ -27,7 +27,7 @@ export class AllProducts extends React.Component {
     this.props.fetchCategories()
   }
   handleChange(event) {
-    this.setState({filterByCategory: event}, () => {
+    this.setState({filterByCategory: event.target.value}, () => {
       this.props.filterProducts(this.state.filterByCategory)
     })
   }

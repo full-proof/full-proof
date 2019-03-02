@@ -8,7 +8,7 @@ const SELECT_PRODUCT = 'SELECT_PRODUCT'
 const ADD_REVIEW = 'ADD_REVIEW'
 
 const FETCH_CATEGORIES = 'FETCH_CATEGORIES'
-const FILTER_PRODUCTS = 'FILTER_PRODUCTS'
+const FILTER_PRODUCTS_BY_CATEGORY = 'FILTER_PRODUCTS_BY_CATEGORY'
 
 // ACTION CREATORS
 const fetchProducts = products => ({
@@ -31,8 +31,8 @@ const fetchCategories = categories => ({
   categories
 })
 
-export const filterProducts = category => ({
-  type: FILTER_PRODUCTS,
+export const filterProductsByCategory = category => ({
+  type: FILTER_PRODUCTS_BY_CATEGORY,
   category
 })
 
@@ -81,14 +81,17 @@ const products = (state = initialState, action) => {
         allProducts: action.products,
         filteredProducts: action.products
       }
-    case FILTER_PRODUCTS:
-      //This reducer needs to be adjusted since categories are Category objects on the Products
+    case FILTER_PRODUCTS_BY_CATEGORY:
       return {
         ...state,
-        filteredProducts: state.allProducts.filter(product =>
-          product.categories.includes(action.category)
-        )
+        filteredProducts: state.allProducts.filter(product => {
+          const foundCategory = product.categories.find(
+            currentCategory => action.category === currentCategory.title
+          )
+          return foundCategory || false
+        })
       }
+
     case FETCH_CATEGORIES:
       return {...state, categories: action.categories}
     case SELECT_PRODUCT:
