@@ -10,7 +10,7 @@ import {
 import {
   fetchProductsThunk,
   fetchCategoriesThunk,
-  filterProducts
+  filterProductsByCategory
 } from '../store/product'
 import {Link} from 'react-router-dom'
 
@@ -21,14 +21,22 @@ export class AllProducts extends React.Component {
       filterByCategory: ''
     }
     this.handleChange = this.handleChange.bind(this)
+    this.handleCategoryChange = this.handleCategoryChange.bind(this)
   }
   componentDidMount() {
     this.props.fetchProducts()
     this.props.fetchCategories()
   }
-  handleChange(event) {
+
+  handleCategoryChange(event) {
     this.setState({filterByCategory: event.target.value}, () => {
-      this.props.filterProducts(this.state.filterByCategory)
+      this.props.filterProductsByCategory(this.state.filterByCategory)
+    })
+  }
+
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
     })
   }
 
@@ -42,7 +50,7 @@ export class AllProducts extends React.Component {
           {categories.map(category => (
             <Button
               key={category.id}
-              onClick={this.handleChange}
+              onClick={this.handleCategoryChange}
               value={category.title}
             >
               {category.title}
@@ -85,7 +93,8 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchProducts: () => dispatch(fetchProductsThunk()),
     fetchCategories: () => dispatch(fetchCategoriesThunk()),
-    filterProducts: category => dispatch(filterProducts(category))
+    filterProductsByCategory: category =>
+      dispatch(filterProductsByCategory(category))
   }
 }
 
