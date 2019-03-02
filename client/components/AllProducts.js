@@ -5,12 +5,14 @@ import {
   ListGroup,
   ListGroupItem,
   ButtonGroup,
-  Button
+  Button,
+  Form
 } from 'react-bootstrap'
 import {
   fetchProductsThunk,
   fetchCategoriesThunk,
-  filterProductsByCategory
+  filterProductsByCategory,
+  filterProductsByTitle
 } from '../store/product'
 import {Link} from 'react-router-dom'
 
@@ -18,10 +20,12 @@ export class AllProducts extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      filterByCategory: ''
+      filterByCategory: '',
+      filterByTitle: ''
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleCategoryChange = this.handleCategoryChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
   componentDidMount() {
     this.props.fetchProducts()
@@ -39,13 +43,20 @@ export class AllProducts extends React.Component {
       [event.target.name]: event.target.value
     })
   }
+  handleSubmit(event) {
+    event.preventDefault()
+    const title = this.state.filterByTitle
+    console.log('title', title)
+    this.props.filterProductsByTitle(title)
+  }
 
   render() {
     const products = this.props.filteredProducts || []
-    console.log('these are propSSS', this.props)
+    // console.log('these are propSSS', this.props)
     const categories = this.props.categories || []
     return (
       <div>
+        <h4>Filter by category:</h4>
         <ButtonGroup type="checkbox" value={this.state.filterByCategory}>
           {categories.map(category => (
             <Button
@@ -57,6 +68,22 @@ export class AllProducts extends React.Component {
             </Button>
           ))}
         </ButtonGroup>
+        <h4>Filter by name:</h4>
+        <form onSubmit={this.handleSubmit}>
+          <Form.Group>
+            <Form.Control
+              style={{width: '18rem'}}
+              type="text"
+              placeholder="Enter name"
+              name="filterByTitle"
+              onChange={this.handleChange}
+              value={this.state.filterByTitle}
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </form>
         {/* {need to dynamize} */}
         {products.map(product => (
           <Card key={product.id} style={{width: '18rem'}}>
@@ -66,11 +93,15 @@ export class AllProducts extends React.Component {
               <Card.Text>{product.description}</Card.Text>
             </Card.Body>
             <ListGroup className="list-group-flush">
-              <ListGroupItem>{product.price}</ListGroupItem>
-              <ListGroupItem>{product.quantity}</ListGroupItem>
+              <ListGroupItem>
+                <strong>Price:</strong> ${product.price}
+              </ListGroupItem>
+              <ListGroupItem>
+                <strong>Quantity:</strong> {product.quantity}
+              </ListGroupItem>
             </ListGroup>
             <Card.Body>
-              <Link to={`/products/${product.id}`}>Product Detail</Link>
+              <Link to={`/products/${product.id}`}>Product Details</Link>
               <Card.Link href="#">Place in Cart</Card.Link>
               {/* {product.review.rating} */}
             </Card.Body>
@@ -94,7 +125,8 @@ const mapDispatchToProps = dispatch => {
     fetchProducts: () => dispatch(fetchProductsThunk()),
     fetchCategories: () => dispatch(fetchCategoriesThunk()),
     filterProductsByCategory: category =>
-      dispatch(filterProductsByCategory(category))
+      dispatch(filterProductsByCategory(category)),
+    filterProductsByTitle: title => dispatch(filterProductsByTitle(title))
   }
 }
 

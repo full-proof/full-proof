@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import axios from 'axios'
 
 // ACTION TYPES
@@ -9,6 +10,8 @@ const ADD_REVIEW = 'ADD_REVIEW'
 
 const FETCH_CATEGORIES = 'FETCH_CATEGORIES'
 const FILTER_PRODUCTS_BY_CATEGORY = 'FILTER_PRODUCTS_BY_CATEGORY'
+
+const FILTER_PRODUCTS_BY_TITLE = 'FILTER_PRODUCTS_BY_TITLE'
 
 // ACTION CREATORS
 const fetchProducts = products => ({
@@ -34,6 +37,11 @@ const fetchCategories = categories => ({
 export const filterProductsByCategory = category => ({
   type: FILTER_PRODUCTS_BY_CATEGORY,
   category
+})
+
+export const filterProductsByTitle = title => ({
+  type: FILTER_PRODUCTS_BY_TITLE,
+  title
 })
 
 // THUNKS
@@ -91,7 +99,13 @@ const products = (state = initialState, action) => {
           return foundCategory || false
         })
       }
-
+    case FILTER_PRODUCTS_BY_TITLE:
+      return {
+        ...state,
+        filteredProducts: state.filteredProducts.filter(product =>
+          product.title.toLowerCase().includes(action.title.toLowerCase())
+        )
+      }
     case FETCH_CATEGORIES:
       return {...state, categories: action.categories}
     case SELECT_PRODUCT:

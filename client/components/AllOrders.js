@@ -18,26 +18,38 @@ export class AllOrders extends React.Component {
   }
 
   handleChange(statusArr) {
-    this.setState({sortByStatus: statusArr}, () =>
+    this.setState({sortByStatus: statusArr}, () => {
       this.props.sortOrders(this.state.sortByStatus)
-    )
+      if (this.state.sortByStatus.length === 0) {
+        this.props.sortOrders([
+          'Cancelled',
+          'Completed',
+          'Created',
+          'Processing',
+          'In Cart'
+        ])
+      }
+    })
   }
 
   render() {
     const orders = this.props.filteredOrders || []
     return (
       <div>
-        <ToggleButtonGroup
-          type="checkbox"
-          value={this.state.sortByStatus}
-          onChange={this.handleChange}
-        >
-          <ToggleButton value="In Cart">In Cart</ToggleButton>{' '}
-          <ToggleButton value="Created">Created</ToggleButton>
-          <ToggleButton value="Processing">Processing</ToggleButton>
-          <ToggleButton value="Completed">Completed</ToggleButton>
-          <ToggleButton value="Cancelled">Cancelled</ToggleButton>
-        </ToggleButtonGroup>
+        <div>
+          <h4>Filter by category:</h4>
+          <ToggleButtonGroup
+            type="checkbox"
+            value={this.state.sortByStatus}
+            onChange={this.handleChange}
+          >
+            <ToggleButton value="In Cart">In Cart</ToggleButton>{' '}
+            <ToggleButton value="Created">Created</ToggleButton>
+            <ToggleButton value="Processing">Processing</ToggleButton>
+            <ToggleButton value="Completed">Completed</ToggleButton>
+            <ToggleButton value="Cancelled">Cancelled</ToggleButton>
+          </ToggleButtonGroup>
+        </div>
         <Table striped bordered hover>
           <thead>
             <tr>
