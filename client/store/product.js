@@ -8,6 +8,8 @@ const SELECT_PRODUCT = 'SELECT_PRODUCT'
 
 const ADD_REVIEW = 'ADD_REVIEW'
 
+const CLEAR_FILTERED_PRODUCTS = 'CLEAR_FILTERED_PRODUCTS'
+
 const FETCH_CATEGORIES = 'FETCH_CATEGORIES'
 const FILTER_PRODUCTS_BY_CATEGORY = 'FILTER_PRODUCTS_BY_CATEGORY'
 
@@ -43,6 +45,8 @@ export const filterProductsByTitle = title => ({
   type: FILTER_PRODUCTS_BY_TITLE,
   title
 })
+
+export const clearFilteredProducts = () => ({type: CLEAR_FILTERED_PRODUCTS})
 
 // THUNKS
 
@@ -89,6 +93,8 @@ const products = (state = initialState, action) => {
         allProducts: action.products,
         filteredProducts: action.products
       }
+    case CLEAR_FILTERED_PRODUCTS:
+      return {...state, filteredProducts: state.allProducts}
     case FILTER_PRODUCTS_BY_CATEGORY:
       return {
         ...state,

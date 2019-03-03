@@ -2,16 +2,21 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {
   Card,
+  Container,
   ListGroup,
   ListGroupItem,
-  ButtonGroup,
+  ToggleButtonGroup,
+  ToggleButton,
   Button,
-  Form
+  Form,
+  Row,
+  Col
 } from 'react-bootstrap'
 import {
   fetchProductsThunk,
   fetchCategoriesThunk,
   filterProductsByCategory,
+  clearFilteredProducts,
   filterProductsByTitle
 } from '../store/product'
 import {Link} from 'react-router-dom'
@@ -54,20 +59,32 @@ export class AllProducts extends React.Component {
     const products = this.props.filteredProducts || []
     // console.log('these are propSSS', this.props)
     const categories = this.props.categories || []
+
     return (
       <div>
         <h4>Filter by category:</h4>
-        <ButtonGroup type="checkbox" value={this.state.filterByCategory}>
+        <ToggleButtonGroup
+          type="radio"
+          name="Categories"
+          defaultValue={this.state.filterByCategory || 'All Products'}
+        >
+          <ToggleButton
+            variant="dark"
+            onClick={() => this.props.clearFilteredProducts()}
+            value="All Products"
+          >
+            All Products
+          </ToggleButton>
           {categories.map(category => (
-            <Button
+            <ToggleButton
               key={category.id}
               onClick={this.handleCategoryChange}
               value={category.title}
             >
               {category.title}
-            </Button>
+            </ToggleButton>
           ))}
-        </ButtonGroup>
+        </ToggleButtonGroup>
         <h4>Filter by name:</h4>
         <form onSubmit={this.handleSubmit}>
           <Form.Group>
@@ -84,29 +101,34 @@ export class AllProducts extends React.Component {
             Submit
           </Button>
         </form>
-        {/* {need to dynamize} */}
-        {products.map(product => (
-          <Card key={product.id} style={{width: '18rem'}}>
-            <Card.Img variant="top" src={product.imgUrl} />
-            <Card.Body>
-              <Card.Title>{product.title}</Card.Title>
-              <Card.Text>{product.description}</Card.Text>
-            </Card.Body>
-            <ListGroup className="list-group-flush">
-              <ListGroupItem>
-                <strong>Price:</strong> ${product.price}
-              </ListGroupItem>
-              <ListGroupItem>
-                <strong>Quantity:</strong> {product.quantity}
-              </ListGroupItem>
-            </ListGroup>
-            <Card.Body>
-              <Link to={`/products/${product.id}`}>Product Details</Link>
-              <Card.Link href="#">Place in Cart</Card.Link>
-              {/* {product.review.rating} */}
-            </Card.Body>
-          </Card>
-        ))}
+        <Container fluid="true">
+          <Row noGutters="true">
+            {products.map(product => (
+              <Col key={product.id}>
+                <Card style={{width: '18rem'}}>
+                  <Card.Img variant="top" src={product.imgUrl} />
+                  <Card.Body>
+                    <Card.Title>{product.title}</Card.Title>
+                    <Card.Text>{product.description}</Card.Text>
+                  </Card.Body>
+                  <ListGroup className="list-group-flush">
+                    <ListGroupItem>
+                      <strong>Price:</strong> ${product.price}
+                    </ListGroupItem>
+                    <ListGroupItem>
+                      <strong>Quantity:</strong> {product.quantity}
+                    </ListGroupItem>
+                  </ListGroup>
+                  <Card.Body>
+                    <Link to={`/products/${product.id}`}>Product Details</Link>
+                    <Card.Link href="#">Place in Cart</Card.Link>
+                    {/* {product.review.rating} */}
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </Container>
       </div>
     )
   }
@@ -126,6 +148,7 @@ const mapDispatchToProps = dispatch => {
     fetchCategories: () => dispatch(fetchCategoriesThunk()),
     filterProductsByCategory: category =>
       dispatch(filterProductsByCategory(category)),
+    clearFilteredProducts: () => dispatch(clearFilteredProducts()),
     filterProductsByTitle: title => dispatch(filterProductsByTitle(title))
   }
 }
