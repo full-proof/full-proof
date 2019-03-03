@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import AllOrders from './AllOrders'
 
-class UserHome extends React.Component {
+export class UserHome extends React.Component {
   constructor() {
     super()
     this.state = {
