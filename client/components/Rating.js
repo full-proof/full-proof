@@ -18,7 +18,12 @@ const Rating = props => {
               onClick={props.clickHandler}
             />
           ) : (
-            <img key={idx} value={idx + 1} src={`/star_rating/${star}.png`} />
+            <img
+              key={idx}
+              value={idx + 1}
+              src={`/star_rating/${star}.png`}
+              width="22rem"
+            />
           )
       )}
     </div>
