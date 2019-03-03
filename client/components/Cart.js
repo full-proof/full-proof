@@ -3,8 +3,7 @@ import {connect} from 'react-redux'
 import {Table} from 'react-bootstrap'
 
 import {fetchCartThunk} from '../store/cart'
-import {Link} from 'react-routers-dom'
-
+import {Link} from 'react-router-dom'
 
 export class Cart extends React.Component {
   componentDidMount() {
@@ -15,7 +14,7 @@ export class Cart extends React.Component {
     const order = this.props.cart || {}
     const cartProducts = this.props.cart.products || []
 
-    return cart.id ? (
+    return order.id ? (
       <div>
         <h3>Cart Info</h3>
         <Table striped bordered hover>

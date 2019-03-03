@@ -5,11 +5,12 @@ import Rating from './Rating'
 const Reviews = props => {
   return (
     <div>
+      <h4>Reviews</h4>
       {props.reviews &&
         props.reviews.map(review => (
           <Card key={review.id}>
             <Card.Header>
-              {review.user.name}
+              Reviewed by <i>{review.user.name}</i>
               <Rating rating={review.rating} />
             </Card.Header>
             <Card.Body>
