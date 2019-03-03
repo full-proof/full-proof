@@ -5,7 +5,8 @@ import {
   Container,
   ListGroup,
   ListGroupItem,
-  ButtonGroup,
+  ToggleButtonGroup,
+  ToggleButton,
   Button,
   Form,
   Row,
@@ -15,6 +16,7 @@ import {
   fetchProductsThunk,
   fetchCategoriesThunk,
   filterProductsByCategory,
+  clearFilteredProducts,
   filterProductsByTitle
 } from '../store/product'
 import {Link} from 'react-router-dom'
@@ -61,17 +63,28 @@ export class AllProducts extends React.Component {
     return (
       <div>
         <h4>Filter by category:</h4>
-        <ButtonGroup type="checkbox" value={this.state.filterByCategory}>
+        <ToggleButtonGroup
+          type="radio"
+          name="Categories"
+          defaultValue={this.state.filterByCategory || 'All Products'}
+        >
+          <ToggleButton
+            variant="dark"
+            onClick={() => this.props.clearFilteredProducts()}
+            value="All Products"
+          >
+            All Products
+          </ToggleButton>
           {categories.map(category => (
-            <Button
+            <ToggleButton
               key={category.id}
               onClick={this.handleCategoryChange}
               value={category.title}
             >
               {category.title}
-            </Button>
+            </ToggleButton>
           ))}
-        </ButtonGroup>
+        </ToggleButtonGroup>
         <h4>Filter by name:</h4>
         <form onSubmit={this.handleSubmit}>
           <Form.Group>
@@ -135,6 +148,7 @@ const mapDispatchToProps = dispatch => {
     fetchCategories: () => dispatch(fetchCategoriesThunk()),
     filterProductsByCategory: category =>
       dispatch(filterProductsByCategory(category)),
+    clearFilteredProducts: () => dispatch(clearFilteredProducts()),
     filterProductsByTitle: title => dispatch(filterProductsByTitle(title))
   }
 }
