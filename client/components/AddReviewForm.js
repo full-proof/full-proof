@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Form, Button, Col} from 'react-bootstrap'
+import RatingWidget from './RatingWidget'
 
 export class AddReviewForm extends React.Component {
   constructor() {
@@ -21,6 +22,7 @@ export class AddReviewForm extends React.Component {
       content: '',
       rating: 1
     })
+    this.props.closeForm()
   }
 
   handleChange(event) {
@@ -28,23 +30,13 @@ export class AddReviewForm extends React.Component {
   }
 
   render() {
+    console.log('Form Rating', this.state.rating)
     return (
       <Form onSubmit={this.handleSubmit}>
         <Col>
           <Form.Group controlId="exampleForm.ControlSelect1">
             <Form.Label>Rating</Form.Label>
-            <Form.Control
-              as="select"
-              name="rating"
-              value={this.state.rating}
-              onChange={this.handleChange}
-            >
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-            </Form.Control>
+            <RatingWidget onRatingChange={rating => this.setState({rating})} />
           </Form.Group>
         </Col>
         <Col>

@@ -8,9 +8,19 @@ const Rating = props => {
 
   return (
     <div>
-      {stars.map((star, idx) => (
-        <img key={idx} src={`/star_rating/${star}.png`} />
-      ))}
+      {stars.map(
+        (star, idx) =>
+          props.clickHandler ? (
+            <img
+              key={idx}
+              value={idx + 1}
+              src={`/star_rating/${star}.png`}
+              onClick={props.clickHandler}
+            />
+          ) : (
+            <img key={idx} value={idx + 1} src={`/star_rating/${star}.png`} />
+          )
+      )}
     </div>
   )
 }
