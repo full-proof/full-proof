@@ -1,8 +1,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Table} from 'react-bootstrap'
+
+import {fetchCartThunk} from '../store/cart'
 import {Link} from 'react-routers-dom'
-// import {fetchCart} from '../store/orders'
+
 
 export class Cart extends React.Component {
   componentDidMount() {
@@ -11,16 +13,15 @@ export class Cart extends React.Component {
 
   render() {
     const order = this.props.cart || {}
-    // const productArray = this.props.singleOrder.products || []
+    const cartProducts = this.props.cart.products || []
 
-    return order.user ? (
+    return cart.id ? (
       <div>
-        <h3>Order Info</h3>
+        <h3>Cart Info</h3>
         <Table striped bordered hover>
           <thead>
             <tr>
               <th>Order ID</th>
-              <th>User</th>
               <th>Status</th>
               <th>Order Date</th>
             </tr>
@@ -38,8 +39,8 @@ export class Cart extends React.Component {
             }
           </tbody>
         </Table>
-        <h3>Products in Order</h3>
-        {/* <Table striped bordered hover>
+        <h3>Products in Cart</h3>
+        <Table striped bordered hover>
           <thead>
             <tr>
               <th>Product ID</th>
@@ -49,7 +50,7 @@ export class Cart extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {productArray.map(product => (
+            {cartProducts.map(product => (
               <tr key={product.id}>
                 <td>{product.id}</td>
                 <td>
@@ -60,23 +61,23 @@ export class Cart extends React.Component {
               </tr>
             ))}
           </tbody>
-        </Table> */}
+        </Table>
       </div>
     ) : (
-      <p>Loading</p>
+      <p>No Cart</p>
     )
   }
 }
 
 const mapStateToProps = state => {
   return {
-    cart: state.orders.cart
+    cart: state.cart
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchCart: () => dispatch(fetchCart())
+    fetchCart: () => dispatch(fetchCartThunk())
   }
 }
 

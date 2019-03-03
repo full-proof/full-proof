@@ -5,7 +5,6 @@ import axios from 'axios'
 const FETCH_ORDERS = 'FETCH_ORDERS'
 const FETCH_SINGLE_ORDER = 'FETCH_SINGLE_ORDER'
 const FILTER_ORDERS = 'FILTER_ORDERS'
-const UPDATE_ORDER = 'UPDATE_ORDER'
 
 // ACTION CREATORS
 const fetchOrders = orders => ({
@@ -23,10 +22,6 @@ export const filterOrders = statusArr => ({
   statusArr
 })
 
-const updateOrder = cart => ({
-  type: UPDATE_ORDER,
-  cart
-})
 // THUNKS
 
 export const fetchOrdersThunk = () => async dispatch => {
@@ -44,18 +39,12 @@ export const fetchSingleOrderThunk = id => async dispatch => {
   dispatch(fetchSingleOrder(data))
 }
 
-export const updateOrderThunk = (singleProduct, quantity) => async dispatch => {
-  const {data} = await axios.post('/api/orders', {singleProduct, quantity})
-  dispatch(updateOrder(data))
-}
-
 // REDUCER
 
 const initialState = {
   allOrders: [],
   filteredOrders: [],
-  singleOrder: {},
-  cart: {}
+  singleOrder: {}
 }
 
 const orders = (state = initialState, action) => {
@@ -71,8 +60,6 @@ const orders = (state = initialState, action) => {
       }
     case FETCH_SINGLE_ORDER:
       return {...state, singleOrder: action.order}
-    case UPDATE_ORDER:
-      return {...state, cart: action.cart}
     default:
       return state
   }

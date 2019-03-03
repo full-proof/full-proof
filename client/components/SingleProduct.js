@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Card, ListGroup, ListGroupItem} from 'react-bootstrap'
 import {fetchProductThunk, addReviewThunk} from '../store/product'
-import {updateOrderThunk} from '../store/orders'
+import {updateCartThunk} from '../store/cart'
 import Reviews from './Reviews'
 import {AddReviewForm} from './AddReviewForm'
 
@@ -24,7 +24,7 @@ export class SingleProduct extends React.Component {
   handleCart() {
     const singleProduct = this.props.singleProduct
     const quantity = 1 // need to add select for user-input
-    this.props.updateOrder(singleProduct, quantity)
+    this.props.updateCart(singleProduct, quantity)
   }
 
   render() {
@@ -83,8 +83,8 @@ const mapDispatchToProps = dispatch => {
     fetchProduct: id => dispatch(fetchProductThunk(id)),
     addReview: (productId, loggedinUser, review) =>
       dispatch(addReviewThunk(productId, loggedinUser, review)),
-    updateOrder: (singleProduct, quantity) =>
-      dispatch(updateOrderThunk(singleProduct, quantity))
+    updateCart: (singleProduct, quantity) =>
+      dispatch(updateCartThunk(singleProduct, quantity))
   }
 }
 
