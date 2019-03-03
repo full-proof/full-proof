@@ -1,8 +1,9 @@
 const router = require('express').Router()
+const {adminOnly, userAndAdminOnly} = require('./utilities')
 const {Order, User, Product} = require('../db/models')
 module.exports = router
 
-router.get('/', async (req, res, next) => {
+router.get('/', adminOnly, async (req, res, next) => {
   try {
     const allOrders = await Order.findAll({
       include: [User]
@@ -13,7 +14,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', userAndAdminOnly, async (req, res, next) => {
   try {
     const order = await Order.findById(req.params.id, {
       include: [User, Product]
@@ -24,7 +25,7 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-router.post('/', async (req, res, next) => {
+router.post('/', userAndAdminOnly, async (req, res, next) => {
   try {
     const userSession = req.session.id
     const currentProduct = req.body.singleProduct
@@ -45,7 +46,7 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', userAndAdminOnly, async (req, res, next) => {
   try {
     await Order.findById(req.params.id)
     res.sendStatus(202)
