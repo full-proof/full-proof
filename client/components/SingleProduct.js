@@ -40,8 +40,12 @@ export class SingleProduct extends React.Component {
             <Card.Text>{product.description}</Card.Text>
           </Card.Body>
           <ListGroup className="list-group-flush">
-            <ListGroupItem>{product.price}</ListGroupItem>
-            <ListGroupItem>{product.quantity}</ListGroupItem>
+            <ListGroupItem>
+              <strong>Price:</strong> ${product.price}
+            </ListGroupItem>
+            <ListGroupItem>
+              <strong>Quantity:</strong> {product.quantity}
+            </ListGroupItem>
           </ListGroup>
           <Card.Body>
             <Card.Link onClick={this.handleCart}>Place in Cart</Card.Link>
