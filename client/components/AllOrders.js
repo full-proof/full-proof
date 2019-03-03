@@ -1,7 +1,12 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {Table, Button, ToggleButtonGroup, ToggleButton} from 'react-bootstrap'
-import {fetchOrdersThunk, filterOrders} from '../store/orders'
+import {
+  fetchOrdersThunk,
+  fetchUserOrdersThunk,
+  filterOrders
+} from '../store/orders'
 
 export class AllOrders extends React.Component {
   constructor(props) {
@@ -14,7 +19,9 @@ export class AllOrders extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchOrders()
+    this.props.userId
+      ? this.props.fetchUserOrders(this.props.userId)
+      : this.props.fetchOrders()
   }
 
   handleChange(statusArr) {
@@ -43,7 +50,7 @@ export class AllOrders extends React.Component {
             value={this.state.sortByStatus}
             onChange={this.handleChange}
           >
-            <ToggleButton value="In Cart">In Cart</ToggleButton>{' '}
+            <ToggleButton value="In Cart">In Cart</ToggleButton>
             <ToggleButton value="Created">Created</ToggleButton>
             <ToggleButton value="Processing">Processing</ToggleButton>
             <ToggleButton value="Completed">Completed</ToggleButton>
@@ -56,7 +63,7 @@ export class AllOrders extends React.Component {
               <th>Order Number</th>
               <th>Status</th>
               <th>Order Date</th>
-              <th>User</th>
+              {!this.props.userId && <th>User</th>}
               <th>Details</th>
             </tr>
           </thead>
@@ -67,11 +74,17 @@ export class AllOrders extends React.Component {
                   <td>{order.id}</td>
                   <td>{order.status}</td>
                   <td>{order.createdAt}</td>
+                  {!this.props.userId && (
+                    <td>
+                      <Link to={`/users/${order.user.id}`}>
+                        {order.user.name}
+                      </Link>
+                    </td>
+                  )}
                   <td>
-                    <a href={`/users/${order.user.id}`}>{order.user.name}</a>
-                  </td>
-                  <td>
-                    <Button href={`/orders/${order.id}`}>View Details</Button>
+                    <Link to={`/orders/${order.id}`}>
+                      <Button>View Details</Button>
+                    </Link>
                   </td>
                 </tr>
               )
@@ -93,6 +106,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     fetchOrders: () => dispatch(fetchOrdersThunk()),
+    fetchUserOrders: userId => dispatch(fetchUserOrdersThunk(userId)),
     sortOrders: sortByStatus => dispatch(filterOrders(sortByStatus))
   }
 }

@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Table} from 'react-bootstrap'
 import {fetchSingleOrderThunk} from '../store/orders'
+import {Link} from 'react-router-dom'
 
 export class SingleOrder extends React.Component {
   componentDidMount() {
@@ -9,9 +10,8 @@ export class SingleOrder extends React.Component {
   }
 
   render() {
-    const order = this.props.singleOrder.order || {}
+    const order = this.props.singleOrder || {}
     const productArray = this.props.singleOrder.products || []
-
     return order.user ? (
       <div>
         <h3>Order Info</h3>
@@ -29,7 +29,7 @@ export class SingleOrder extends React.Component {
               <tr key={order.id}>
                 <td>{order.id}</td>
                 <td>
-                  <a href={`/users/${order.user.id}`}>{order.user.name}</a>
+                  <Link to={`/users/${order.user.id}`}>{order.user.name}</Link>
                 </td>
                 <td>{order.status}</td>
                 <td>{order.createdAt}</td>
@@ -52,7 +52,7 @@ export class SingleOrder extends React.Component {
               <tr key={product.id}>
                 <td>{product.id}</td>
                 <td>
-                  <a href={`/products/${product.id}`}>{product.title}</a>
+                  <Link to={`/products/${product.id}`}>{product.title}</Link>
                 </td>
                 <td>{product.orderedProducts.price}</td>
                 <td>{product.orderedProducts.quantity}</td>

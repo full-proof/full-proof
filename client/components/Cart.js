@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Table} from 'react-bootstrap'
+import {Link} from 'react-routers-dom'
 // import {fetchCart} from '../store/orders'
 
 export class Cart extends React.Component {
@@ -29,7 +30,7 @@ export class Cart extends React.Component {
               <tr key={order.id}>
                 <td>{order.id}</td>
                 <td>
-                  <a href={`/users/${order.user.id}`}>{order.user.name}</a>
+                  <Link to={`/users/${order.user.id}`}>{order.user.name}</Link>
                 </td>
                 <td>{order.status}</td>
                 <td>{order.createdAt}</td>
@@ -52,7 +53,7 @@ export class Cart extends React.Component {
               <tr key={product.id}>
                 <td>{product.id}</td>
                 <td>
-                  <a href={`/products/${product.id}`}>{product.title}</a>
+                  <Link to={`/products/${product.id}`}>{product.title}</Link>
                 </td>
                 <td>{product.orderedProducts.price}</td>
                 <td>{product.orderedProducts.quantity}</td>
