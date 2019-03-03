@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const {adminOnly, userAndAdminOnly} = require('./utilities')
+const pick = require('lodash.pick')
 const {Order, User, Product} = require('../db/models')
 module.exports = router
 
@@ -41,6 +42,24 @@ router.post('/', userAndAdminOnly, async (req, res, next) => {
       through: {quantity: quantity, price: magicProduct.price}
     })
     res.json(currentOrder)
+  } catch (err) {
+    next(err)
+  }
+})
+
+const adminUpdatableFields = ['status']
+
+router.put('/:id', adminOnly, async (req, res, next) => {
+  // Currently, only admin can update an order—but I've made it so that, should we decide that user's can update an order as well, it would be easy to refactor accordingly.
+  const id = req.params.id
+  let updateInfo
+  try {
+    if (req.user.isAdmin) {
+      updateInfo = pick(req.body, adminUpdatableFields)
+      const order = await Order.findById(id)
+      const updatedOrder = await order.update(updateInfo)
+      res.json(updatedOrder)
+    }
   } catch (err) {
     next(err)
   }

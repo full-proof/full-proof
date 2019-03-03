@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const {adminOnly, userAndAdminOnly} = require('./utilities')
+const pick = require('lodash.pick')
 const {User, Order, Product} = require('../db/models')
 module.exports = router
 
@@ -45,10 +46,22 @@ router.get('/:id/orders', userAndAdminOnly, async (req, res, next) => {
   }
 })
 
+const userUpdatableFields = ['name']
+const adminUpdatableFields = [
+  ...userUpdatableFields,
+  'isAdmin',
+  'passwordExpired'
+]
+
 router.put('/:id', userAndAdminOnly, async (req, res, next) => {
   const id = req.params.id
-  const updateInfo = req.body
+  let updateInfo
   try {
+    if (req.user.isAdmin) {
+      updateInfo = pick(req.body, adminUpdatableFields)
+    } else {
+      updateInfo = pick(req.body, userUpdatableFields)
+    }
     const user = await User.findById(id)
     const updatedUser = await user.update(updateInfo)
     res.json(updatedUser)
