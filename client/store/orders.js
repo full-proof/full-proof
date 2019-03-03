@@ -29,6 +29,11 @@ export const fetchOrdersThunk = () => async dispatch => {
   dispatch(fetchOrders(data))
 }
 
+export const fetchUserOrdersThunk = userId => async dispatch => {
+  const {data} = await axios.get(`/api/users/${userId}/orders`)
+  dispatch(fetchOrders(data))
+}
+
 export const fetchSingleOrderThunk = id => async dispatch => {
   const {data} = await axios.get(`/api/orders/${id}`)
   dispatch(fetchSingleOrder(data))

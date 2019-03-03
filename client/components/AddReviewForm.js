@@ -57,6 +57,8 @@ export class AddReviewForm extends React.Component {
   }
 }
 
+export default AddReviewForm
+
 // const mapStateToProps = state => {
 //   return {
 //     reviews: state.products.singleProduct.reviews

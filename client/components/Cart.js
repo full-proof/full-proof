@@ -1,7 +1,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Table} from 'react-bootstrap'
+
 import {fetchCartThunk} from '../store/cart'
+import {Link} from 'react-routers-dom'
+
 
 export class Cart extends React.Component {
   componentDidMount() {
@@ -9,7 +12,7 @@ export class Cart extends React.Component {
   }
 
   render() {
-    const cart = this.props.cart || {}
+    const order = this.props.cart || {}
     const cartProducts = this.props.cart.products || []
 
     return cart.id ? (
@@ -25,10 +28,13 @@ export class Cart extends React.Component {
           </thead>
           <tbody>
             {
-              <tr key={cart.id}>
-                <td>{cart.id}</td>
-                <td>{cart.status}</td>
-                <td>{cart.createdAt}</td>
+              <tr key={order.id}>
+                <td>{order.id}</td>
+                <td>
+                  <Link to={`/users/${order.user.id}`}>{order.user.name}</Link>
+                </td>
+                <td>{order.status}</td>
+                <td>{order.createdAt}</td>
               </tr>
             }
           </tbody>
@@ -48,7 +54,7 @@ export class Cart extends React.Component {
               <tr key={product.id}>
                 <td>{product.id}</td>
                 <td>
-                  <a href={`/products/${product.id}`}>{product.title}</a>
+                  <Link to={`/products/${product.id}`}>{product.title}</Link>
                 </td>
                 <td>{product.orderedProducts.price}</td>
                 <td>{product.orderedProducts.quantity}</td>
