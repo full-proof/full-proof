@@ -14,10 +14,12 @@ import {
   Cart
 } from './components'
 import {me} from './store'
+import {fetchCartThunk} from './store/cart'
 
 class Main extends Component {
-  componentDidMount() {
-    this.props.loadInitialData()
+  async componentDidMount() {
+    await this.props.loadInitialData()
+    this.props.fetchCartThunk()
   }
 
   render() {
@@ -58,7 +60,10 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     loadInitialData() {
-      dispatch(me())
+      return dispatch(me())
+    },
+    fetchCartThunk: () => {
+      dispatch(fetchCartThunk())
     }
   }
 }
