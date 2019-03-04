@@ -197,13 +197,27 @@ async function seed() {
   await cancelledOrder.setUser(cody)
   await inCartOrder.setUser(cody)
 
-  await completedOrder.addProduct(dutchOven, {
+  await Promise.all([
+    completedOrder.addProduct(dutchOven, {
+      through: {quantity: 2, price: 2.99}
+    }),
+    completedOrder.addProduct(whisk, {
+      through: {quantity: 1, price: 2.99}
+    }),
+    completedOrder.addProduct(bastingBrushes, {
+      through: {quantity: 6, price: 2.99}
+    })
+  ])
+
+  await processingOrder.addProduct(dutchOven, {
     through: {quantity: 2, price: 2.99}
   })
-  await completedOrder.addProduct(whisk, {
+
+  await cancelledOrder.addProduct(whisk, {
     through: {quantity: 1, price: 2.99}
   })
-  await completedOrder.addProduct(bastingBrushes, {
+
+  await inCartOrder.addProduct(bastingBrushes, {
     through: {quantity: 6, price: 2.99}
   })
 
