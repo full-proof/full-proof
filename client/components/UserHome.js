@@ -28,8 +28,13 @@ export class UserHome extends React.Component {
             </p>
           </Jumbotron>
         </Tab>
-        <Tab eventKey="orders" title="Orders">
-          <AllOrders userId={this.props.userId} />
+        {this.props.user.isAdmin && (
+          <Tab eventKey="adminPanel" title="Admin Panel">
+            Admin Functionality
+          </Tab>
+        )}
+        <Tab eventKey="orders" title="My Orders">
+          <AllOrders userId={this.props.user.id} />
         </Tab>
       </Tabs>
     )
@@ -42,7 +47,7 @@ export class UserHome extends React.Component {
 const mapState = state => {
   return {
     name: state.user.name,
-    userId: state.user.id
+    user: state.user
   }
 }
 

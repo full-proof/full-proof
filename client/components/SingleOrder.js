@@ -38,6 +38,7 @@ export class SingleOrder extends React.Component {
               <th>Order ID</th>
               <th>User</th>
               <th>Status</th>
+              <th>Total</th>
               <th>Order Date</th>
             </tr>
           </thead>
@@ -68,7 +69,16 @@ export class SingleOrder extends React.Component {
                     order.status
                   )}
                 </td>
-                <td>{order.createdAt}</td>
+                <td>
+                  ${order.products
+                    .reduce(
+                      (runningTotal, product) =>
+                        runningTotal + Number(product.orderedProducts.price),
+                      0
+                    )
+                    .toFixed(2)}
+                </td>
+                <td>{new Date(order.createdAt).toString()}</td>
               </tr>
             }
           </tbody>
@@ -90,7 +100,7 @@ export class SingleOrder extends React.Component {
                 <td>
                   <Link to={`/products/${product.id}`}>{product.title}</Link>
                 </td>
-                <td>{product.orderedProducts.price}</td>
+                <td>${product.orderedProducts.price}</td>
                 <td>{product.orderedProducts.quantity}</td>
               </tr>
             ))}

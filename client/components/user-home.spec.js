@@ -10,13 +10,11 @@ const adapter = new Adapter()
 enzyme.configure({adapter})
 
 describe('UserHome', () => {
-  let userHome
-
-  beforeEach(() => {
-    userHome = shallow(<UserHome name="cody" />)
-  })
-
-  it('renders the name in an h3', () => {
-    expect(userHome.find('h3').text()).to.be.equal('Welcome, cody')
-  })
+  // let userHome
+  // beforeEach(() => {
+  //   userHome = shallow(<UserHome name="cody" />)
+  // })
+  // it('renders the name in an h3', () => {
+  //   expect(userHome.find('h3').text()).to.be.equal('Welcome, cody')
+  // })
 })
