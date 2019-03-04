@@ -29,9 +29,6 @@ export class Cart extends React.Component {
             {
               <tr key={order.id}>
                 <td>{order.id}</td>
-                <td>
-                  <Link to={`/users/${order.user.id}`}>{order.user.name}</Link>
-                </td>
                 <td>{order.status}</td>
                 <td>{order.createdAt}</td>
               </tr>
