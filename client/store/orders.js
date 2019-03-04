@@ -39,6 +39,15 @@ export const fetchSingleOrderThunk = id => async dispatch => {
   dispatch(fetchSingleOrder(data))
 }
 
+export const updateOrderThunk = (orderId, status) => async dispatch => {
+  try {
+    const {data} = await axios.put(`/api/orders/${orderId}`, {status})
+    dispatch(fetchSingleOrder(data))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 // REDUCER
 
 const initialState = {

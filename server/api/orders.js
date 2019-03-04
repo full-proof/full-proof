@@ -16,6 +16,7 @@ router.get('/', adminOnly, async (req, res, next) => {
 })
 
 router.get('/:id', userAndAdminOnly, async (req, res, next) => {
+  // We might want to change this to admin only, and make it so that authorized users only view their orders when viewing their own profiles.
   try {
     const order = await Order.findById(req.params.id, {
       include: [User, Product]
@@ -57,7 +58,10 @@ router.put('/:id', adminOnly, async (req, res, next) => {
     if (req.user.isAdmin) {
       updateInfo = pick(req.body, adminUpdatableFields)
       const order = await Order.findById(id)
-      const updatedOrder = await order.update(updateInfo)
+      await order.update(updateInfo)
+      const updatedOrder = await Order.findById(id, {
+        include: [User, Product]
+      })
       res.json(updatedOrder)
     }
   } catch (err) {
