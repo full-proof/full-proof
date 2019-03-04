@@ -1,8 +1,10 @@
 const router = require('express').Router()
+const {adminOnly, userAndAdminOnly} = require('./utilities')
+const pick = require('lodash.pick')
 const {User, Order, Product} = require('../db/models')
 module.exports = router
 
-router.get('/', async (req, res, next) => {
+router.get('/', adminOnly, async (req, res, next) => {
   try {
     const users = await User.findAll({
       // explicitly select only the id and email fields - even though
@@ -16,7 +18,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/:id', async (req, res, next) => {
+router.get('/:id', userAndAdminOnly, async (req, res, next) => {
   const id = req.params.id
   try {
     const user = await User.findOne({
@@ -30,7 +32,7 @@ router.get('/:id', async (req, res, next) => {
   }
 })
 
-router.get('/:id/orders', async (req, res, next) => {
+router.get('/:id/orders', userAndAdminOnly, async (req, res, next) => {
   const id = req.params.id
   try {
     const orders = await Order.findAll({
@@ -44,10 +46,22 @@ router.get('/:id/orders', async (req, res, next) => {
   }
 })
 
-router.put('/:id', async (req, res, next) => {
+const userUpdatableFields = ['name']
+const adminUpdatableFields = [
+  ...userUpdatableFields,
+  'isAdmin',
+  'passwordExpired'
+]
+
+router.put('/:id', userAndAdminOnly, async (req, res, next) => {
   const id = req.params.id
-  const updateInfo = req.body
+  let updateInfo
   try {
+    if (req.user.isAdmin) {
+      updateInfo = pick(req.body, adminUpdatableFields)
+    } else {
+      updateInfo = pick(req.body, userUpdatableFields)
+    }
     const user = await User.findById(id)
     const updatedUser = await user.update(updateInfo)
     res.json(updatedUser)
@@ -56,7 +70,8 @@ router.put('/:id', async (req, res, next) => {
   }
 })
 
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', adminOnly, async (req, res, next) => {
+  // This is adminOnly because, at least right now, users do no have the ability to delete their accounts.
   const id = req.params.id
   try {
     await User.destroy({where: {id}})
