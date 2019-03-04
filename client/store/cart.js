@@ -18,6 +18,7 @@ const updateCart = cart => ({
 // THUNKS
 
 export const fetchCartThunk = () => async (dispatch, getState) => {
+  // REVIEW: errors here
   const state = getState()
   let userId = state.user.id
   const {data} = await axios.get(`/api/cart/${userId}`)

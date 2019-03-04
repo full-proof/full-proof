@@ -8,7 +8,9 @@ const adminOnly = (req, res, next) => {
 }
 
 const userAndAdminOnly = (req, res, next) => {
+  // REVIEW: when would this throw an error?
   const userId = req.user.id
+  // REVIEW: what will this ever be false?
   if (req.user.id === userId || (req.user && req.user.isAdmin)) {
     next()
   } else {

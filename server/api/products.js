@@ -5,6 +5,8 @@ module.exports = router
 
 router.get('/', async (req, res, next) => {
   try {
+    // REVIEW: how is this with huge numbers of products?
+    //         filtering etc.
     const allProducts = await Product.findAll({
       include: [Review, Category]
     })

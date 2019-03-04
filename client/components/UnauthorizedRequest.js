@@ -2,6 +2,7 @@ import React from 'react'
 import Jumbotron from 'react-bootstrap/Jumbotron'
 
 const UnauthorizedRequest = () => {
+  // REVIEW: walk me through this
   return (
     <Jumbotron>
       <h1>Not Found</h1>

@@ -26,6 +26,7 @@ export class Cart extends React.Component {
             </tr>
           </thead>
           <tbody>
+            {/* REVIEW: is this curly-block doing anything? (is key needed here?) */}
             {
               <tr key={order.id}>
                 <td>{order.id}</td>
@@ -60,6 +61,7 @@ export class Cart extends React.Component {
         </Table>
       </div>
     ) : (
+      {/* REVIEW: long-tern */}
       <p>No Cart</p>
     )
   }

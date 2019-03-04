@@ -4,8 +4,53 @@ const pick = require('lodash.pick')
 const {Order, User, Product} = require('../db/models')
 module.exports = router
 
+// GET ORDERS
+// GET /orders
+// /orders-overview
+// /orders-management
+// GET /orders?include=User
+// GET /orders?include[]=User&include[]=Product
+// GET /orders?include[]=User&fields[User]=name&fields[User]=age
+//
+// graphQL
+//   client-side queries
+//   type Order {
+//     id Integer
+//     lineItems [LineItem]
+//   }
+//   type LineItem
+//
+//
+//
+//   client/
+//
+//   GET /graphql?query="<query>"
+//
+//   const page = 2;
+//   const query = `query {
+//     orders (page: ${page}) {
+//       id
+//       lineItems {
+//         quantity
+//         price
+//         product {
+//            title
+//            description
+//         }
+//       }
+//       user {
+//         fullName
+//         age
+//         zipCode
+//       }
+//     }
+//   }`
+//   const orders = await graphQL.runQuery(query)
+//
+// req.query.include = ['User, 'Product']
 router.get('/', adminOnly, async (req, res, next) => {
   try {
+    // REVIEW: discuss challenges of fetching all/including all
     const allOrders = await Order.findAll({
       include: [User, Product]
     })

@@ -37,10 +37,25 @@ export class AllProducts extends React.Component {
     this.props.fetchCategories()
   }
 
+  // <a href="/products?page=1&category=utensils">Utensils</a>
+  // <a href="/products?page=1&category=ceramics">Ceramics</a>
+  //
+  // <a href="/products?page=1">1</a>
+  // <a href="/products?page=2">2</a>
+  // <a href="/products?page=3">3</a>
+
   handleCategoryChange(event) {
-    this.setState({filterByCategory: event.target.value}, () => {
-      this.props.filterProductsByCategory(this.state.filterByCategory)
-    })
+    // REVIEW: maintaining state through url
+    //         selecting in mapStateToProps
+    //this.setState({filterByCategory: event.target.value}, () => {
+    //  this.props.filterProductsByCategory(this.state.filterByCategory)
+    //})
+    //
+    // current url === /products?page=1
+    // new category = utensils
+    // next url should === /products?page=1&category=utensils
+    //
+    this.props.history.push(nexturl)// build url for current page + new category
   }
 
   handleChange(event) {
