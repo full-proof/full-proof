@@ -197,6 +197,8 @@ async function seed() {
   await cancelledOrder.setUser(cody)
   await inCartOrder.setUser(cody)
 
+  await order.addProduct(whisk, {through: {quantity: 10, price: 2.99}})
+
   await Promise.all([
     completedOrder.addProduct(dutchOven, {
       through: {quantity: 2, price: 2.99}

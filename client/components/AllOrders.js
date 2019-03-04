@@ -41,6 +41,7 @@ export class AllOrders extends React.Component {
 
   render() {
     const orders = this.props.filteredOrders || []
+    console.log('ORDER ---> ', orders)
     return (
       <div>
         <div>
@@ -64,6 +65,7 @@ export class AllOrders extends React.Component {
               <th>Status</th>
               <th>Order Date</th>
               {!this.props.userId && <th>User</th>}
+              <th>Total</th>
               <th>Details</th>
             </tr>
           </thead>
@@ -73,7 +75,7 @@ export class AllOrders extends React.Component {
                 <tr key={order.id}>
                   <td>{order.id}</td>
                   <td>{order.status}</td>
-                  <td>{order.createdAt}</td>
+                  <td>{new Date(order.createdAt).toString()}</td>
                   {!this.props.userId && (
                     <td>
                       <Link to={`/users/${order.user.id}`}>
@@ -81,6 +83,15 @@ export class AllOrders extends React.Component {
                       </Link>
                     </td>
                   )}
+                  <td>
+                    ${order.products
+                      .reduce(
+                        (runningTotal, product) =>
+                          runningTotal + Number(product.orderedProducts.price),
+                        0
+                      )
+                      .toFixed(2)}
+                  </td>
                   <td>
                     <Link to={`/orders/${order.id}`}>
                       <Button>View Details</Button>
