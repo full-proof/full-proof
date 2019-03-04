@@ -51,7 +51,6 @@ export class AllProducts extends React.Component {
   handleSubmit(event) {
     event.preventDefault()
     const title = this.state.filterByTitle
-    console.log('title', title)
     this.props.filterProductsByTitle(title)
   }
 
