@@ -41,7 +41,6 @@ export class AllOrders extends React.Component {
 
   render() {
     const orders = this.props.filteredOrders || []
-    console.log('ORDER ---> ', orders)
     return (
       <div>
         <div>
