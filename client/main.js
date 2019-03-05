@@ -12,7 +12,8 @@ import {
   AllOrders,
   SingleOrder,
   Cart,
-  AddProduct
+  AddProduct,
+  AddCategory
 } from './components'
 import {me} from './store'
 import {fetchCartThunk} from './store/cart'
@@ -37,7 +38,10 @@ class Main extends Component {
         <Route exact path="/products/:id" component={SingleProduct} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <Route path="/addProduct" component={AddProduct} />
+        <Route path="/addProduct" component={AddProduct} />{' '}
+        {/* {change this eventually} */}
+        <Route path="/addCategory" component={AddCategory} />{' '}
+        {/* {change this eventual to products/categories} */}
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
