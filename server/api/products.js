@@ -80,6 +80,24 @@ router.put('/:id', async (req, res, next) => {
   try {
     const productToUpdate = await Product.findById(req.params.id)
     const updatedProduct = await productToUpdate.update(req.body)
+    const categories = req.body.categories
+    if (categories) {
+      const categoryTitles = (function() {
+        const arr = []
+        for (let i = 0; i < categories.length; i++) {
+          arr.push(categories[i].title)
+        }
+        return arr
+      })()
+      console.log('category titles?', categoryTitles)
+
+      const categoriesToSet = await Category.findAll({
+        where: {
+          title: {in: categoryTitles}
+        }
+      })
+      updatedProduct.setCategories(categoriesToSet)
+    }
     res.json(updatedProduct)
   } catch (err) {
     next(err)

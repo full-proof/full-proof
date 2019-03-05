@@ -12,7 +12,11 @@ import {
   FormLabel,
   Button
 } from 'react-bootstrap'
-import {fetchProductThunk, updateProductThunk} from '../store/product'
+import {
+  fetchProductThunk,
+  updateProductThunk,
+  fetchCategoriesThunk
+} from '../store/product'
 
 export class EditSingleProduct extends React.Component {
   constructor(props) {
@@ -20,13 +24,52 @@ export class EditSingleProduct extends React.Component {
     this.state = {
       edit: false,
       title: '',
-      price: Number,
-      quantity: Number,
+      price: 0,
+      quantity: 0,
       description: '',
-      imgUrl: ''
+      imgUrl: '',
+      categories: [],
+      selectedCategory: {}
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.removeCategory = this.removeCategory.bind(this)
+    this.addCategory = this.addCategory.bind(this)
+  }
+
+  async componentDidMount() {
+    await this.props.fetchCategories()
+    this.setState({
+      categories: this.props.singleProductCategories,
+      price: this.props.singleProduct.price,
+      quantity: this.props.singleProduct.quantity
+    })
+  }
+
+  removeCategory(category) {
+    const index = this.state.categories.indexOf(category)
+    // console.log('index', index)
+    this.setState({
+      categories: this.state.categories.filter(
+        cat => cat.title !== category.title
+      )
+    })
+  }
+
+  addCategory(category) {
+    console.log('selected category', this.state.selectedCategory)
+    console.log('category to add', category)
+    const allCategories = this.props.categories
+    const categoryObj = (function() {
+      for (let key in allCategories) {
+        if (allCategories[key].title === category) return allCategories[key]
+      }
+    })()
+    if (
+      !this.state.categories.includes(categoryObj) &&
+      this.state.selectedCategory
+    )
+      this.setState({categories: [...this.state.categories, categoryObj]})
   }
 
   handleChange(event) {
@@ -38,27 +81,41 @@ export class EditSingleProduct extends React.Component {
     event.preventDefault()
     const productId = this.props.singleProduct.id
     const singleProduct = this.props.singleProduct
-    let {title, price, quantity, description, imgUrl} = this.state
+    let {title, price, quantity, description, imgUrl, categories} = this.state
     const updateInfo = {
       title,
       price: Number(price),
       quantity: Number(quantity),
       description,
-      imgUrl
+      imgUrl,
+      categories
     }
     ;(function defaultValues() {
       for (let key in updateInfo) {
         if (updateInfo[key].length === 0) updateInfo[key] = singleProduct[key]
       }
     })()
-    this.props.updateProductThunk(productId, updateInfo)
+    if (this.state.categories.length) {
+      this.props.updateProductThunk(productId, updateInfo)
+    } else {
+      alert('All products must have at least one category!')
+    }
   }
 
   render() {
+    console.log('state categories', this.state.categories)
+    // console.log('all categories', this.props.categories)
     const product = this.props.singleProduct || {}
-    console.log('product', product)
+    const productCategories = product.categories || []
     const {edit} = this.state
-    // console.log('props?', this.props)
+    const productCategoriesTitles = (function() {
+      const arr = []
+      for (let i = 0; i < productCategories.length; i++) {
+        arr.push(productCategories[i].title)
+      }
+      return arr
+    })()
+
     return (
       <div>
         <Button
@@ -76,7 +133,6 @@ export class EditSingleProduct extends React.Component {
                   <Col>
                     <FormLabel>Product Title</FormLabel>
                     <Form.Control
-                      column
                       type="text"
                       placeholder={product.title}
                       name="title"
@@ -87,7 +143,6 @@ export class EditSingleProduct extends React.Component {
                   <Col>
                     <FormLabel>Price</FormLabel>
                     <Form.Control
-                      column
                       type="text"
                       placeholder={product.price}
                       name="price"
@@ -98,7 +153,6 @@ export class EditSingleProduct extends React.Component {
                   <Col>
                     <FormLabel>Quantity</FormLabel>
                     <Form.Control
-                      column
                       type="text"
                       placeholder={product.quantity}
                       name="quantity"
@@ -110,7 +164,6 @@ export class EditSingleProduct extends React.Component {
                 <Col>
                   <FormLabel>Description</FormLabel>
                   <Form.Control
-                    column
                     type="text"
                     placeholder={product.description}
                     style={{height: '10rem'}}
@@ -122,7 +175,6 @@ export class EditSingleProduct extends React.Component {
                 <Col>
                   <FormLabel>Image</FormLabel>
                   <Form.Control
-                    column
                     type="text"
                     placeholder={product.imgUrl}
                     name="imgUrl"
@@ -130,10 +182,61 @@ export class EditSingleProduct extends React.Component {
                     value={this.state.imgUrl}
                   />
                 </Col>
+                <Row>
+                  <h4>Current Categories</h4>
+                  <br />
+                  {this.state.categories &&
+                    this.state.categories.map((category, idx) => (
+                      <Col key={idx}>
+                        <FormLabel>{category.title}</FormLabel>
+                        <Button
+                          variant="danger"
+                          size="sm"
+                          onClick={() => this.removeCategory(category)}
+                        >
+                          Remove
+                        </Button>
+                      </Col>
+                    ))}
+                </Row>
+                <h4>Add Categories</h4>
+                <Row>
+                  <Form.Control
+                    as="select"
+                    onChange={this.handleChange}
+                    value={this.state.selectedCategory}
+                    name="selectedCategory"
+                  >
+                    <option value="-">-</option>
+                    {this.props.categories
+                      .map((category, idx) => (
+                        <option key={idx} value={category.title}>
+                          {category.title}
+                        </option>
+                      ))
+                      .filter(
+                        category =>
+                          !productCategoriesTitles.includes(
+                            category.props.value
+                          )
+                      )}
+                  </Form.Control>
+                  <Button
+                    varianty="secondary"
+                    type="button"
+                    onClick={() =>
+                      this.addCategory(this.state.selectedCategory)
+                    }
+                  >
+                    Add
+                  </Button>
+                </Row>
               </Form.Group>
-              <Button variant="primary" type="submit">
-                Submit
-              </Button>
+              <Row>
+                <Button variant="primary" type="submit">
+                  Submit
+                </Button>
+              </Row>
             </form>
           </Container>
         </Collapse>
@@ -163,6 +266,8 @@ export class EditSingleProduct extends React.Component {
 const mapStateToProps = state => {
   return {
     singleProduct: state.products.singleProduct,
+    singleProductCategories: state.products.singleProduct.categories,
+    categories: state.products.categories,
     loggedinUser: state.user
   }
 }
@@ -171,7 +276,8 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchProduct: id => dispatch(fetchProductThunk(id)),
     updateProductThunk: (productId, updateInfo) =>
-      dispatch(updateProductThunk(productId, updateInfo))
+      dispatch(updateProductThunk(productId, updateInfo)),
+    fetchCategories: () => dispatch(fetchCategoriesThunk())
   }
 }
 

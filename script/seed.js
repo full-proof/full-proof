@@ -86,10 +86,6 @@ async function seed() {
 
   const inCartOrder = await Order.create({status: 'In Cart'})
 
-  const category = await Category.create({
-    title: 'Material'
-  })
-
   const newCategories = await Promise.all([
     Category.create({title: 'New'}),
     Category.create({title: 'Fun'}),
@@ -291,8 +287,6 @@ async function seed() {
         })
     })
   )
-
-  await dutchOven.addCategory(category)
 
   await Promise.all(
     newReviews.map(reviewToAssign => {
