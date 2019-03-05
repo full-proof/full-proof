@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, ButtonToolbar, Jumbotron} from 'react-bootstrap'
+import {Button, ButtonToolbar, Jumbotron, Modal, Alert} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
@@ -37,8 +37,26 @@ export class UserHome extends React.Component {
   }
 
   render() {
+    console.log('USER!!!!!', this.props.user)
     return (
       <div>
+        {/* {this.props.user.passwordExpired && (
+            <Modal.Dialog>
+              <Modal.Header closeButton>
+                <Modal.Title>Modal title</Modal.Title>
+              </Modal.Header>
+
+              <Modal.Body>
+                <p>Modal body text goes here.</p>
+              </Modal.Body>
+
+              <Modal.Footer>
+                <Button variant="secondary">Close</Button>
+                <Button variant="primary">Save changes</Button>
+              </Modal.Footer>
+            </Modal.Dialog>
+          )} */}
+
         <ButtonToolbar>
           <Link to="/home/profile">
             <Button
