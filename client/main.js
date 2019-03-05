@@ -12,7 +12,8 @@ import {
   AllOrders,
   SingleOrder,
   Cart,
-  AddProduct
+  AddProduct,
+  EditSingleProduct
 } from './components'
 import {me} from './store'
 

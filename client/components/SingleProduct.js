@@ -5,6 +5,7 @@ import {fetchProductThunk, addReviewThunk} from '../store/product'
 import {updateCartThunk} from '../store/cart'
 import Reviews from './Reviews'
 import {AddReviewForm} from './AddReviewForm'
+import EditSingleProduct from './EditSingleProduct'
 
 export class SingleProduct extends React.Component {
   constructor() {
@@ -29,7 +30,10 @@ export class SingleProduct extends React.Component {
 
   render() {
     const product = this.props.singleProduct
-    return (
+    const user = this.props.loggedinUser
+    return user.isAdmin ? (
+      <EditSingleProduct props={this.props} />
+    ) : (
       <div>
         <Card key={product.id} style={{width: '40rem'}}>
           {product.imgUrl ? (
