@@ -61,4 +61,4 @@ class AdminPanel extends React.Component {
   }
 }
 
-export default withRouter(AdminPanel)
+export default AdminPanel

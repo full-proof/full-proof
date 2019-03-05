@@ -48,14 +48,16 @@ export class UserHome extends React.Component {
               Profile
             </Button>
           </Link>
-          <Link to="/home/adminpanel">
-            <Button
-              value="adminpanel"
-              active={this.props.match.params.view === 'adminpanel'}
-            >
-              Admin Panel
-            </Button>
-          </Link>
+          {this.props.user.isAdmin && (
+            <Link to="/home/adminpanel">
+              <Button
+                value="adminpanel"
+                active={this.props.match.params.view === 'adminpanel'}
+              >
+                Admin Panel
+              </Button>
+            </Link>
+          )}
           <Link to="/home/myorders">
             <Button
               value="myorders"

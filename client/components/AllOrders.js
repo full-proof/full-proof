@@ -7,6 +7,7 @@ import {
   fetchUserOrdersThunk,
   filterOrders
 } from '../store/orders'
+import {withRouter} from 'react-router'
 
 export class AllOrders extends React.Component {
   constructor(props) {
@@ -41,7 +42,6 @@ export class AllOrders extends React.Component {
 
   render() {
     const orders = this.props.filteredOrders || []
-
     return (
       <div>
         <div>
@@ -123,4 +123,6 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllOrders)
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(AllOrders)
+)
