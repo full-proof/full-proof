@@ -8,8 +8,8 @@ export class AddProduct extends React.Component {
     super(props)
     this.state = {
       title: '',
-      price: 0,
-      quantity: 0,
+      price: 0, // Number
+      quantity: 0, // Number
       description: '',
       imgUrl: ''
     }

@@ -23,7 +23,7 @@ export class Cart extends React.Component {
     const order = this.props.cart || {}
     const cartProducts = this.props.cart.products || []
     const total = cartProducts.reduce((acc, product) => {
-      return product.price + acc
+      return Number(product.price) + acc
     }, 0)
 
     return order.id ? (
@@ -59,54 +59,60 @@ export class Cart extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {cartProducts.map(product => (
-              <tr key={product.id}>
-                <td>
-                  <Link to={`/products/${product.id}`}>{product.title}</Link>
-                </td>
-                <td>${product.orderedProducts.price}</td>
-                <td>{product.orderedProducts.quantity}</td>
-                <td>
-                  <DropdownButton id="dropdown-basic-button" title="Quantity">
-                    <Dropdown.Item
-                      eventKey={1}
-                      onSelect={event => this.handleUpdate(event, product)}
+            {cartProducts.length ? (
+              cartProducts.map(product => (
+                <tr key={product.id}>
+                  <td>
+                    <Link to={`/products/${product.id}`}>{product.title}</Link>
+                  </td>
+                  <td>${product.orderedProducts.price}</td>
+                  <td>{product.orderedProducts.quantity}</td>
+                  <td>
+                    <DropdownButton id="dropdown-basic-button" title="Quantity">
+                      <Dropdown.Item
+                        eventKey={1}
+                        onSelect={event => this.handleUpdate(event, product)}
+                      >
+                        1
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        eventKey={2}
+                        onSelect={event => this.handleUpdate(event, product)}
+                      >
+                        2
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        eventKey={3}
+                        onSelect={event => this.handleUpdate(event, product)}
+                      >
+                        3
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        eventKey={4}
+                        onSelect={event => this.handleUpdate(event, product)}
+                      >
+                        4
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        eventKey={5}
+                        onSelect={event => this.handleUpdate(event, product)}
+                      >
+                        5
+                      </Dropdown.Item>
+                    </DropdownButton>
+                  </td>
+                  <td>
+                    <Button
+                      onClick={event => this.handleDelete(event, product)}
                     >
-                      1
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      eventKey={2}
-                      onSelect={event => this.handleUpdate(event, product)}
-                    >
-                      2
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      eventKey={3}
-                      onSelect={event => this.handleUpdate(event, product)}
-                    >
-                      3
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      eventKey={4}
-                      onSelect={event => this.handleUpdate(event, product)}
-                    >
-                      4
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      eventKey={5}
-                      onSelect={event => this.handleUpdate(event, product)}
-                    >
-                      5
-                    </Dropdown.Item>
-                  </DropdownButton>
-                </td>
-                <td>
-                  <Button onClick={event => this.handleDelete(event, product)}>
-                    Remove Product
-                  </Button>
-                </td>
-              </tr>
-            ))}
+                      Remove Product
+                    </Button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <p>No Products in Your Cart</p>
+            )}
           </tbody>
         </Table>
         <Table striped bordered hover>
@@ -123,6 +129,7 @@ export class Cart extends React.Component {
             }
           </tbody>
         </Table>
+        <Button>Checkout</Button>
       </div>
     ) : (
       <p>No Cart</p>

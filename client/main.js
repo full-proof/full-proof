@@ -13,6 +13,7 @@ import {
   SingleOrder,
   Cart,
   AddProduct,
+  EditSingleProduct,
   AddCategory
 } from './components'
 import {me} from './store'

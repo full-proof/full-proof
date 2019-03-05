@@ -15,7 +15,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/categories', adminOnly, async (req, res, next) => {
+router.get('/categories', async (req, res, next) => {
   try {
     const categories = await Category.findAll()
     res.json(categories)
@@ -39,6 +39,9 @@ router.get('/:id', async (req, res, next) => {
               attributes: ['name']
             }
           ]
+        },
+        {
+          model: Category
         }
       ]
     })
@@ -76,8 +79,8 @@ router.post('/categories', adminOnly, async (req, res, next) => {
 router.put('/:id', async (req, res, next) => {
   try {
     const productToUpdate = await Product.findById(req.params.id)
-    await productToUpdate.update(req.body)
-    res.json(productToUpdate)
+    const updatedProduct = await productToUpdate.update(req.body)
+    res.json(updatedProduct)
   } catch (err) {
     next(err)
   }

@@ -18,6 +18,8 @@ const FILTER_PRODUCTS_BY_TITLE = 'FILTER_PRODUCTS_BY_TITLE'
 
 const ADD_PRODUCT = 'ADD_PRODUCT'
 
+const UPDATE_PRODUCT = 'UPDATE_PRODUCT'
+
 const ADD_CATEGORY = 'ADD_CATEGORY'
 
 // ACTION CREATORS
@@ -34,6 +36,11 @@ const fetchProduct = product => ({
 const addProduct = product => ({
   type: ADD_PRODUCT,
   product
+})
+
+const updateProduct = updatedProduct => ({
+  type: UPDATE_PRODUCT,
+  updatedProduct
 })
 
 const addCategory = category => ({
@@ -81,6 +88,13 @@ export const addProductThunk = product => async dispatch => {
   dispatch(addProduct(newProduct))
 }
 
+
+export const updateProductThunk = (productId, updateInfo) => async dispatch => {
+  const {data} = await axios.put(`/api/products/${productId}`, updateInfo)
+  const updatedProduct = data
+  dispatch(updateProduct(updatedProduct))
+}
+
 export const addCategoryThunk = category => async dispatch => {
   const {data} = await axios.post(`/api/products/categories`, category)
   const newCategory = data
@@ -122,6 +136,8 @@ const products = (state = initialState, action) => {
       }
     case ADD_PRODUCT:
       return {...state, allProducts: [...state.allProducts, action.product]}
+    case UPDATE_PRODUCT:
+      return {...state, singleProduct: action.updatedProduct}
     case ADD_CATEGORY:
       return {...state, categories: [...state.categories, action.category]}
     case CLEAR_FILTERED_PRODUCTS:
