@@ -54,7 +54,7 @@ export class SingleOrder extends React.Component {
                   {user.isAdmin && user.id !== order.user.id ? (
                     <Form.Control
                       as="select"
-                      value={this.state.orderStatus}
+                      value={this.state.orderStatus} // delete this?
                       onChange={this.handleChange}
                     >
                       <option value={order.status}>{order.status}</option>
