@@ -30,23 +30,6 @@ export class Cart extends React.Component {
 
     return order.id ? (
       <div>
-        <h3>Cart Info</h3>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              <tr>
-                <td>{order.id}</td>
-                <td>{order.status}</td>
-              </tr>
-            }
-          </tbody>
-        </Table>
         <h3>Products in Cart</h3>
         <Table striped bordered hover>
           <thead>

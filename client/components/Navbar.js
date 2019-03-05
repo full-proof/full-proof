@@ -3,9 +3,14 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
-import {Button, Modal, Form} from 'react-bootstrap'
+import {Button, Modal, Form, Badge} from 'react-bootstrap'
 
-const Navbar = ({handleClick, isLoggedIn, passwordExpired}) => (
+const Navbar = ({
+  handleClick,
+  isLoggedIn,
+  passwordExpired,
+  cartProducts = []
+}) => (
   <div>
     <h1>Full-Proof Academy</h1>
     <nav>
@@ -15,6 +20,9 @@ const Navbar = ({handleClick, isLoggedIn, passwordExpired}) => (
           <Link to="/home">Home</Link>
           <Link to="/products">Products</Link>
           <Link to="/cart">Cart</Link>
+          <Badge pill variant="primary">
+            {cartProducts.length}
+          </Badge>
           <a href="#" onClick={handleClick}>
             Logout
           </a>
@@ -26,6 +34,9 @@ const Navbar = ({handleClick, isLoggedIn, passwordExpired}) => (
           <Link to="/login">Login</Link>
           <Link to="/signup">Sign Up</Link>
           <Link to="/cart">Cart</Link>
+          <Badge pill variant="primary">
+            {cartProducts.length}
+          </Badge>
         </div>
       )}
     </nav>
@@ -58,7 +69,8 @@ const Navbar = ({handleClick, isLoggedIn, passwordExpired}) => (
 const mapState = state => {
   return {
     isLoggedIn: !!state.user.id,
-    passwordExpired: state.user.passwordExpired
+    passwordExpired: state.user.passwordExpired,
+    cartProducts: state.cart.products
   }
 }
 
