@@ -10,8 +10,7 @@ const Product = db.define('product', {
     }
   },
   price: {
-    // Make sure it logs two decimal places for dollar amount
-    type: Sequelize.FLOAT,
+    type: Sequelize.DECIMAL(10, 2),
     allowNull: false,
     defaultValue: 0
   },

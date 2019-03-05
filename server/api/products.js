@@ -49,14 +49,14 @@ router.get('/:id', async (req, res, next) => {
 })
 
 router.post('/', async (req, res, next) => {
+  const {title, price, quantity, description, imgUrl} = req.body
   try {
-    console.log('user??', req.user)
     const newProduct = await Product.create({
-      title: req.body.title,
-      price: req.body.price,
-      quantity: req.body.quantity,
-      description: req.body.description,
-      imgUrl: req.body.imgUrl
+      title,
+      price,
+      quantity,
+      description,
+      imgUrl
     })
     res.json(newProduct)
   } catch (err) {
