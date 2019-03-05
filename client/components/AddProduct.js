@@ -49,7 +49,6 @@ export class AddProduct extends React.Component {
               <Col>
                 <FormLabel>Product Title</FormLabel>
                 <Form.Control
-                  column
                   required
                   type="text"
                   placeholder="Enter title"
@@ -61,7 +60,6 @@ export class AddProduct extends React.Component {
               <Col>
                 <FormLabel>Price</FormLabel>
                 <Form.Control
-                  column
                   required
                   type="text"
                   placeholder="Enter price"
@@ -73,7 +71,6 @@ export class AddProduct extends React.Component {
               <Col>
                 <FormLabel>Quantity</FormLabel>
                 <Form.Control
-                  column
                   required
                   type="text"
                   placeholder="Enter quantity"
@@ -86,7 +83,6 @@ export class AddProduct extends React.Component {
             <Col>
               <FormLabel>Description</FormLabel>
               <Form.Control
-                column
                 type="text"
                 placeholder="Enter description"
                 style={{height: '10rem'}}
@@ -98,7 +94,6 @@ export class AddProduct extends React.Component {
             <Col>
               <FormLabel>Image</FormLabel>
               <Form.Control
-                column
                 type="text"
                 placeholder="Enter image URL"
                 name="imgUrl"

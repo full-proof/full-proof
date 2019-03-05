@@ -1,11 +1,9 @@
 import React from 'react'
 import {Button, ButtonToolbar, Jumbotron} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
-import {withRouter} from 'react-router'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import AllOrders from './AllOrders'
-import AdminPanel from './AdminPanel'
+import {AllOrders, AdminPanel} from './'
 
 export class UserHome extends React.Component {
   constructor() {
@@ -35,7 +33,7 @@ export class UserHome extends React.Component {
       myorders: <AllOrders selectedUserId={this.props.user.id} />
     }
 
-    return tabDisplay[this.props.match.params.view]
+    return tabDisplay[this.props.match.params.view || 'profile']
   }
 
   render() {
@@ -83,7 +81,7 @@ const mapState = state => {
   }
 }
 
-export default withRouter(connect(mapState)(UserHome))
+export default connect(mapState)(UserHome)
 
 /**
  * PROP TYPES
