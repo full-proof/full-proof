@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const {adminOnly} = require('./utilities')
 const {Product, Review, Category, User} = require('../db/models')
 
 module.exports = router
@@ -14,8 +15,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/categories', async (req, res, next) => {
-  // authorize
+router.get('/categories', adminOnly, async (req, res, next) => {
   try {
     const categories = await Category.findAll()
     res.json(categories)
@@ -67,8 +67,7 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.post('/categories', async (req, res, next) => {
-  // authorize
+router.post('/categories', adminOnly, async (req, res, next) => {
   try {
     const newCategory = await Category.create(req.body)
     res.json(newCategory)

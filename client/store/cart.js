@@ -30,16 +30,18 @@ export const updateCartThunk = (singleProduct, quantity) => async (
 ) => {
   const state = getState()
   let userId = state.user.id
-  const {data} = await axios.put(`/api/cart/${userId}`, {
-    singleProduct,
-    quantity
-  })
-  dispatch(updateCart(data))
+  await axios.put(`/api/cart/${userId}`, {singleProduct, quantity})
+  dispatch(fetchCartThunk())
 }
 
 // export const updateQuantityThunk
 
-// export const removeItemThunk
+// export const removeFromCartThunk = (product) => async (dispatch, getState) => {
+//   const state = getState()
+//   let userId = state.user.id
+//   const {data} = await axios.delete(`/api/cart/${userId}`, product)
+//   dispatch(updateCart(data))
+// }
 
 // REDUCER
 

@@ -1,42 +1,74 @@
 import React from 'react'
-import {Tabs, Tab, Jumbotron, Button} from 'react-bootstrap'
+import {Button, ButtonToolbar, Jumbotron} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
+import {withRouter} from 'react-router'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import AllOrders from './AllOrders'
+import AdminPanel from './AdminPanel'
 
 export class UserHome extends React.Component {
   constructor() {
     super()
-    this.state = {
-      key: 'profile'
-    }
+    this.handleChange = this.handleChange.bind(this)
+    this.displayTab = this.displayTab.bind(this)
   }
-  render() {
-    const {name} = this.props
 
+  handleChange(value, event) {
+    this.setState({[event.target.name]: value})
+  }
+
+  displayTab() {
+    const tabDisplay = {
+      profile: (
+        <Jumbotron>
+          <h3>Welcome, {this.props.name}</h3>
+          <p>Please enjoy our selection of baking products!</p>
+          <p>
+            <Link to="/products">
+              <Button variant="primary">Shop</Button>
+            </Link>
+          </p>
+        </Jumbotron>
+      ),
+      adminpanel: <AdminPanel />,
+      myorders: <AllOrders selectedUserId={this.props.user.id} />
+    }
+
+    return tabDisplay[this.props.match.params.view]
+  }
+
+  render() {
     return (
-      <Tabs activeKey={this.state.key} onSelect={key => this.setState({key})}>
-        <Tab eventKey="profile" title="Profile">
-          <Jumbotron>
-            <h3>Welcome, {name}</h3>
-            <p>Please enjoy our selection of baking products!</p>
-            <p>
-              <Link to="/products">
-                <Button variant="primary">Shop</Button>
-              </Link>
-            </p>
-          </Jumbotron>
-        </Tab>
-        {this.props.user.isAdmin && (
-          <Tab eventKey="adminPanel" title="Admin Panel">
-            Admin Functionality
-          </Tab>
-        )}
-        <Tab eventKey="orders" title="My Orders">
-          <AllOrders userId={this.props.user.id} />
-        </Tab>
-      </Tabs>
+      <div>
+        <ButtonToolbar>
+          <Link to="/home/profile">
+            <Button
+              value="profile"
+              active={this.props.match.params.view === 'profile'}
+            >
+              Profile
+            </Button>
+          </Link>
+          <Link to="/home/adminpanel">
+            <Button
+              value="adminpanel"
+              active={this.props.match.params.view === 'adminpanel'}
+            >
+              Admin Panel
+            </Button>
+          </Link>
+          <Link to="/home/myorders">
+            <Button
+              value="myorders"
+              active={this.props.match.params.view === 'myorders'}
+            >
+              My Orders
+            </Button>
+          </Link>
+        </ButtonToolbar>
+        {this.displayTab()}
+      </div>
     )
   }
 }
@@ -51,7 +83,7 @@ const mapState = state => {
   }
 }
 
-export default connect(mapState)(UserHome)
+export default withRouter(connect(mapState)(UserHome))
 
 /**
  * PROP TYPES
