@@ -16,4 +16,6 @@ export {default as Reviews} from './Reviews'
 export {default as AddReviewForm} from './AddReviewForm'
 export {default as UnauthorizedRequest} from './UnauthorizedRequest'
 export {default as AddProduct} from './AddProduct'
+export {default as EditSingleProduct} from './EditSingleProduct'
 export {default as AddCategory} from './AddCategory'
+
