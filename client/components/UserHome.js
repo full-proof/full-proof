@@ -37,6 +37,7 @@ export class UserHome extends React.Component {
   }
 
   render() {
+    console.log('USER!!!!!', this.props.user)
     return (
       <div>
         <ButtonToolbar>
