@@ -4,6 +4,8 @@ import {Table, Button, Dropdown, DropdownButton} from 'react-bootstrap'
 
 import {fetchCartThunk, updateCartThunk} from '../store/cart'
 import {Link} from 'react-router-dom'
+import EditAddress from './EditAddress'
+import Address from './Address'
 
 export class Cart extends React.Component {
   componentDidMount() {
@@ -23,7 +25,7 @@ export class Cart extends React.Component {
     const order = this.props.cart || {}
     const cartProducts = this.props.cart.products || []
     const total = cartProducts.reduce((acc, product) => {
-      return Number(product.price) + acc
+      return Number(product.orderedProducts.price) + acc
     }, 0)
 
     return order.id ? (
@@ -34,7 +36,6 @@ export class Cart extends React.Component {
             <tr>
               <th>Order ID</th>
               <th>Status</th>
-              <th>Order Date</th>
             </tr>
           </thead>
           <tbody>
@@ -42,7 +43,6 @@ export class Cart extends React.Component {
               <tr>
                 <td>{order.id}</td>
                 <td>{order.status}</td>
-                <td>{order.createdAt}</td>
               </tr>
             }
           </tbody>
@@ -124,12 +124,13 @@ export class Cart extends React.Component {
           <tbody>
             {
               <tr>
-                <td>${total}</td>
+                <td>${total.toFixed(2)}</td>
               </tr>
             }
           </tbody>
         </Table>
-        <Button>Checkout</Button>
+        <h3>Checkout Information</h3>
+        <Address />
       </div>
     ) : (
       <p>No Cart</p>
