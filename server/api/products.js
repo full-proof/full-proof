@@ -15,7 +15,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-router.get('/categories', adminOnly, async (req, res, next) => {
+router.get('/categories', async (req, res, next) => {
   try {
     const categories = await Category.findAll()
     res.json(categories)

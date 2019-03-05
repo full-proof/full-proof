@@ -19,6 +19,7 @@ import {
   clearFilteredProducts,
   filterProductsByTitle
 } from '../store/product'
+import {updateCartThunk} from '../store/cart'
 import {Link} from 'react-router-dom'
 
 export class AllProducts extends React.Component {
@@ -31,6 +32,7 @@ export class AllProducts extends React.Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleCategoryChange = this.handleCategoryChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleCart = this.handleCart.bind(this)
   }
   componentDidMount() {
     this.props.fetchProducts()
@@ -54,9 +56,13 @@ export class AllProducts extends React.Component {
     this.props.filterProductsByTitle(title)
   }
 
+  handleCart(event, product) {
+    event.preventDefault()
+    this.props.updateCart(product, 1)
+  }
+
   render() {
     const products = this.props.filteredProducts || []
-    // console.log('these are propSSS', this.props)
     const categories = this.props.categories || []
 
     return (
@@ -119,8 +125,21 @@ export class AllProducts extends React.Component {
                     </ListGroupItem>
                   </ListGroup>
                   <Card.Body>
-                    <Link to={`/products/${product.id}`}>Product Details</Link>
-                    <Card.Link href="#">Place in Cart</Card.Link>
+                    <Link to={`/products/${product.id}`}>
+                      <Button size="sm">Product Details</Button>
+                    </Link>
+                    {product.quantity > 0 ? (
+                      <Button
+                        size="sm"
+                        onClick={event => this.handleCart(event, product)}
+                      >
+                        Place in Cart
+                      </Button>
+                    ) : (
+                      <Button size="sm" disabled={true}>
+                        Out of Stock
+                      </Button>
+                    )}
                     {/* {product.review.rating} */}
                   </Card.Body>
                 </Card>
@@ -148,7 +167,9 @@ const mapDispatchToProps = dispatch => {
     filterProductsByCategory: category =>
       dispatch(filterProductsByCategory(category)),
     clearFilteredProducts: () => dispatch(clearFilteredProducts()),
-    filterProductsByTitle: title => dispatch(filterProductsByTitle(title))
+    filterProductsByTitle: title => dispatch(filterProductsByTitle(title)),
+    updateCart: (product, quantity) =>
+      dispatch(updateCartThunk(product, quantity))
   }
 }
 
