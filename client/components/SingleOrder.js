@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {Table, Form} from 'react-bootstrap'
 import {fetchSingleOrderThunk, updateOrderThunk} from '../store/orders'
 import {Link} from 'react-router-dom'
+import {withRouter} from 'react-router'
 
 export class SingleOrder extends React.Component {
   constructor(props) {
@@ -50,7 +51,7 @@ export class SingleOrder extends React.Component {
                   <Link to={`/users/${order.user.id}`}>{order.user.name}</Link>
                 </td>
                 <td>
-                  {user.isAdmin ? (
+                  {user.isAdmin && user.id !== order.user.id ? (
                     <Form.Control
                       as="select"
                       value={this.state.orderStatus}
@@ -128,4 +129,6 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SingleOrder)
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(SingleOrder)
+)
