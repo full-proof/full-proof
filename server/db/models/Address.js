@@ -13,7 +13,14 @@ const Address = db.define('address', {
   address_line2: {
     type: Sequelize.STRING
   },
-  city_province: {
+  city: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
+  },
+  state_province: {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
@@ -23,13 +30,6 @@ const Address = db.define('address', {
   postalCode: {
     type: Sequelize.INTEGER,
     allowNull: false
-  },
-  country: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true
-    }
   }
 })
 

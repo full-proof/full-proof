@@ -69,9 +69,9 @@ async function seed() {
   const address = await Address.create({
     address_line1: '2228 Hickory Point',
     address_line2: '2R',
-    city_province: 'Chicago',
-    postalCode: 49024,
-    country: 'Korea'
+    city: 'Chicago',
+    state_province: 'IL',
+    postalCode: 49024
   })
 
   const order = await Order.create({

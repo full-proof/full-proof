@@ -49,7 +49,10 @@ router.put('/:userId', async (req, res, next) => {
       if (quantity === 0) await userCart.removeProduct(magicProduct)
       else
         await userCart.addProduct(magicProduct, {
-          through: {quantity: quantity, price: magicProduct.price}
+          through: {
+            quantity: quantity,
+            price: Number(magicProduct.price) * quantity
+          }
         })
       res.json(userCart)
     } else {
@@ -62,7 +65,10 @@ router.put('/:userId', async (req, res, next) => {
       if (quantity === 0) await userCart.removeProduct(magicProduct)
       else
         await userCart.addProduct(magicProduct, {
-          through: {quantity: quantity, price: magicProduct.price}
+          through: {
+            quantity: quantity,
+            price: Number(magicProduct.price) * quantity
+          }
         })
       res.json(userCart)
     }
