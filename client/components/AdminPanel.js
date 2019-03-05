@@ -1,13 +1,19 @@
 import React from 'react'
 import {withRouter} from 'react-router-dom'
-import {ToggleButtonGroup, ToggleButton} from 'react-bootstrap'
-import {AllUsers, AllOrders} from './'
+import {
+  ToggleButtonGroup,
+  ToggleButton,
+  Container,
+  Row,
+  Col
+} from 'react-bootstrap'
+import {AllUsers, AllOrders, AddProduct, AddCategory} from './'
 
 class AdminPanel extends React.Component {
   constructor() {
     super()
     this.state = {
-      adminFunction: 'products'
+      adminFunction: 'orders'
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -20,8 +26,8 @@ class AdminPanel extends React.Component {
 
   displayAdminFunction() {
     const adminFunctionDisplay = {
-      products: <p>products</p>,
-      categories: <p>categories</p>,
+      addproduct: <AddProduct />,
+      categories: <AddCategory />,
       users: <AllUsers />,
       orders: <AllOrders />
     }
@@ -31,20 +37,25 @@ class AdminPanel extends React.Component {
   render() {
     return (
       <div>
-        <ToggleButtonGroup
-          vertical
-          name="adminFunction"
-          type="radio"
-          defaultValue="products"
-          onChange={this.handleChange}
-        >
-          <ToggleButton value="addproduct">Add Product</ToggleButton>
-          <ToggleButton value="products">Products</ToggleButton>
-          <ToggleButton value="categories">Categories</ToggleButton>
-          <ToggleButton value="users">Users</ToggleButton>
-          <ToggleButton value="orders">Orders</ToggleButton>
-        </ToggleButtonGroup>
-        {this.displayAdminFunction()}
+        <Container fluid>
+          <Row>
+            <Col lg={1} md={1} sm={1} xl={1} xs={1}>
+              <ToggleButtonGroup
+                vertical
+                name="adminFunction"
+                type="radio"
+                defaultValue="orders"
+                onChange={this.handleChange}
+              >
+                <ToggleButton value="orders">Orders</ToggleButton>
+                <ToggleButton value="users">Users</ToggleButton>
+                <ToggleButton value="addproduct">Add Product</ToggleButton>
+                <ToggleButton value="categories">Categories</ToggleButton>
+              </ToggleButtonGroup>
+            </Col>
+            <Col>{this.displayAdminFunction()}</Col>
+          </Row>
+        </Container>
       </div>
     )
   }
