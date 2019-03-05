@@ -3,8 +3,9 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {logout} from '../store'
+import {Button, Modal, Form} from 'react-bootstrap'
 
-const Navbar = ({handleClick, isLoggedIn}) => (
+const Navbar = ({handleClick, isLoggedIn, passwordExpired}) => (
   <div>
     <h1>Full-Proof Academy</h1>
     <nav>
@@ -28,6 +29,25 @@ const Navbar = ({handleClick, isLoggedIn}) => (
         </div>
       )}
     </nav>
+    <Modal show={passwordExpired} enforceFocus>
+      <Modal.Dialog>
+        <Modal.Header closeButton>
+          <Modal.Title>Password Expired!</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <Form.Label htmlFor="password">Enter a new password</Form.Label>
+          <Form.Control name="password" type="password" />
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClick}>
+            Logout
+          </Button>
+          <Button variant="primary">Update password</Button>
+        </Modal.Footer>
+      </Modal.Dialog>
+    </Modal>
     <hr />
   </div>
 )
@@ -37,7 +57,8 @@ const Navbar = ({handleClick, isLoggedIn}) => (
  */
 const mapState = state => {
   return {
-    isLoggedIn: !!state.user.id
+    isLoggedIn: !!state.user.id,
+    passwordExpired: state.user.passwordExpired
   }
 }
 
