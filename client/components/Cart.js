@@ -1,8 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Table} from 'react-bootstrap'
+import {Table, Button, Dropdown, DropdownButton} from 'react-bootstrap'
 
-import {fetchCartThunk} from '../store/cart'
+import {fetchCartThunk, updateCartThunk} from '../store/cart'
 import {Link} from 'react-router-dom'
 
 export class Cart extends React.Component {
@@ -10,9 +10,21 @@ export class Cart extends React.Component {
     this.props.fetchCart()
   }
 
+  handleUpdate = (quantity, product) => {
+    this.props.updateCart(product, quantity)
+  }
+
+  handleDelete = (event, product) => {
+    event.preventDefault()
+    this.props.updateCart(product, 0)
+  }
+
   render() {
     const order = this.props.cart || {}
     const cartProducts = this.props.cart.products || []
+    const total = cartProducts.reduce((acc, product) => {
+      return product.price + acc
+    }, 0)
 
     return order.id ? (
       <div>
@@ -27,7 +39,7 @@ export class Cart extends React.Component {
           </thead>
           <tbody>
             {
-              <tr key={order.id}>
+              <tr>
                 <td>{order.id}</td>
                 <td>{order.status}</td>
                 <td>{order.createdAt}</td>
@@ -39,23 +51,76 @@ export class Cart extends React.Component {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th>Product ID</th>
               <th>Product Name</th>
               <th>Price</th>
               <th>Quantity</th>
+              <th>Update Quantity</th>
+              <th>Remove</th>
             </tr>
           </thead>
           <tbody>
             {cartProducts.map(product => (
               <tr key={product.id}>
-                <td>{product.id}</td>
                 <td>
                   <Link to={`/products/${product.id}`}>{product.title}</Link>
                 </td>
-                <td>{product.orderedProducts.price}</td>
+                <td>${product.orderedProducts.price}</td>
                 <td>{product.orderedProducts.quantity}</td>
+                <td>
+                  <DropdownButton id="dropdown-basic-button" title="Quantity">
+                    <Dropdown.Item
+                      eventKey={1}
+                      onSelect={event => this.handleUpdate(event, product)}
+                    >
+                      1
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      eventKey={2}
+                      onSelect={event => this.handleUpdate(event, product)}
+                    >
+                      2
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      eventKey={3}
+                      onSelect={event => this.handleUpdate(event, product)}
+                    >
+                      3
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      eventKey={4}
+                      onSelect={event => this.handleUpdate(event, product)}
+                    >
+                      4
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      eventKey={5}
+                      onSelect={event => this.handleUpdate(event, product)}
+                    >
+                      5
+                    </Dropdown.Item>
+                  </DropdownButton>
+                </td>
+                <td>
+                  <Button onClick={event => this.handleDelete(event, product)}>
+                    Remove Product
+                  </Button>
+                </td>
               </tr>
             ))}
+          </tbody>
+        </Table>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              <tr>
+                <td>${total}</td>
+              </tr>
+            }
           </tbody>
         </Table>
       </div>
@@ -73,7 +138,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchCart: () => dispatch(fetchCartThunk())
+    fetchCart: () => dispatch(fetchCartThunk()),
+    updateCart: (product, quantity) =>
+      dispatch(updateCartThunk(product, quantity))
   }
 }
 

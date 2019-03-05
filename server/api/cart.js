@@ -46,9 +46,11 @@ router.put('/:userId', async (req, res, next) => {
       })
       const userCart = cart[0]
       const magicProduct = await Product.findById(singleProduct.id)
-      await userCart.addProduct(magicProduct, {
-        through: {quantity: quantity, price: magicProduct.price}
-      })
+      if (quantity === 0) await userCart.removeProduct(magicProduct)
+      else
+        await userCart.addProduct(magicProduct, {
+          through: {quantity: quantity, price: magicProduct.price}
+        })
       res.json(userCart)
     } else {
       const cart = await Order.findOrCreate({
@@ -57,9 +59,11 @@ router.put('/:userId', async (req, res, next) => {
       })
       const userCart = cart[0]
       const magicProduct = await Product.findById(singleProduct.id)
-      await userCart.addProduct(magicProduct, {
-        through: {quantity: quantity, price: magicProduct.price}
-      })
+      if (quantity === 0) await userCart.removeProduct(magicProduct)
+      else
+        await userCart.addProduct(magicProduct, {
+          through: {quantity: quantity, price: magicProduct.price}
+        })
       res.json(userCart)
     }
   } catch (err) {
