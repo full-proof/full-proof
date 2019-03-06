@@ -10,8 +10,7 @@ import {
   Collapse,
   Form,
   FormLabel,
-  Button,
-  Jumbotron
+  Button
 } from 'react-bootstrap'
 import {
   fetchProductThunk,
@@ -183,7 +182,7 @@ export class EditSingleProduct extends React.Component {
                     <h4>Current Categories</h4>
                   </Col>
                   <br />
-                  {this.state.categories.length ? (
+                  {this.state.categories && this.state.categories.length ? (
                     this.state.categories.map((category, idx) => (
                       <Col key={idx}>
                         <FormLabel>{category.title}</FormLabel>
