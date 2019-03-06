@@ -10,7 +10,8 @@ import {
   Collapse,
   Form,
   FormLabel,
-  Button
+  Button,
+  Jumbotron
 } from 'react-bootstrap'
 import {
   fetchProductThunk,
@@ -48,7 +49,6 @@ export class EditSingleProduct extends React.Component {
 
   removeCategory(category) {
     const index = this.state.categories.indexOf(category)
-    // console.log('index', index)
     this.setState({
       categories: this.state.categories.filter(
         cat => cat.title !== category.title
@@ -57,8 +57,6 @@ export class EditSingleProduct extends React.Component {
   }
 
   addCategory(category) {
-    console.log('selected category', this.state.selectedCategory)
-    console.log('category to add', category)
     const allCategories = this.props.categories
     const categoryObj = (function() {
       for (let key in allCategories) {
@@ -103,8 +101,6 @@ export class EditSingleProduct extends React.Component {
   }
 
   render() {
-    console.log('state categories', this.state.categories)
-    // console.log('all categories', this.props.categories)
     const product = this.props.singleProduct || {}
     const productCategories = product.categories || []
     const {edit} = this.state
@@ -183,9 +179,11 @@ export class EditSingleProduct extends React.Component {
                   />
                 </Col>
                 <Row>
-                  <h4>Current Categories</h4>
+                  <Col>
+                    <h4>Current Categories</h4>
+                  </Col>
                   <br />
-                  {this.state.categories &&
+                  {this.state.categories.length ? (
                     this.state.categories.map((category, idx) => (
                       <Col key={idx}>
                         <FormLabel>{category.title}</FormLabel>
@@ -197,7 +195,10 @@ export class EditSingleProduct extends React.Component {
                           Remove
                         </Button>
                       </Col>
-                    ))}
+                    ))
+                  ) : (
+                    <p>(This product currently has no categories.)</p>
+                  )}
                 </Row>
                 <h4>Add Categories</h4>
                 <Row>
